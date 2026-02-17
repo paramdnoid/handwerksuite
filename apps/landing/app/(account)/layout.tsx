@@ -1,6 +1,5 @@
 import { SidebarProvider, SidebarInset } from "@zunftgewerk/ui";
-import { AccountSidebar } from "@/components/account/account-sidebar";
-import { AccountHeader } from "@/components/account/account-header";
+import { AppSidebar } from "@/components/account/app-sidebar";
 
 export default function AccountLayout({
   children,
@@ -9,10 +8,9 @@ export default function AccountLayout({
 }) {
   return (
     <SidebarProvider>
-      <AccountSidebar />
-      <SidebarInset>
-        <AccountHeader />
-        <div className="flex flex-1 flex-col gap-6 p-6">{children}</div>
+      <AppSidebar />
+      <SidebarInset className="overflow-y-auto">
+        <div className="flex flex-col gap-6 px-6 pt-3 pb-6">{children}</div>
       </SidebarInset>
     </SidebarProvider>
   );
