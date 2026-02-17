@@ -106,6 +106,7 @@ export {
 } from "./components/breadcrumb";
 
 // Sidebar
+export { AppSidebar, type AppSidebarProps } from "./components/app-sidebar";
 export {
   Sidebar,
   SidebarContent,

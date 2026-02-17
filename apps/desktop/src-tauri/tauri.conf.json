@@ -15,6 +15,7 @@
         "title": "ZunftGewerk",
         "titleBarStyle": "Overlay",
         "hiddenTitle": true,
+        "dragDropEnabled": false,
         "width": 1280,
         "height": 800,
         "minWidth": 900,

@@ -1,52 +1,27 @@
 "use client";
 
+import Link from "next/link";
+import { LayoutDashboard } from "lucide-react";
 import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarHeader,
-  SidebarMenu,
+  AppSidebar as AppSidebarShell,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarRail,
 } from "@zunftgewerk/ui";
-import { NavMain } from "./nav-main";
 import { NavUser } from "./nav-user";
 
-export function AppSidebar({
-  ...props
-}: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar(
+  props: React.ComponentProps<typeof AppSidebarShell>,
+) {
   return (
-    <Sidebar collapsible="offcanvas" variant="inset" {...props}>
-      <SidebarHeader>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton
-              size="lg"
-              className="data-[slot=sidebar-menu-button]:p-1.5!"
-            >
-              <img
-                src="/logo.png"
-                alt="ZunftGewerk"
-                className="size-8 rounded-lg"
-              />
-              <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">ZunftGewerk</span>
-                <span className="truncate text-xs text-muted-foreground">
-                  Betriebsplattform
-                </span>
-              </div>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarHeader>
-      <SidebarContent>
-        <NavMain />
-      </SidebarContent>
-      <SidebarFooter>
-        <NavUser />
-      </SidebarFooter>
-      <SidebarRail />
-    </Sidebar>
+    <AppSidebarShell footer={<NavUser />} {...props}>
+      <SidebarMenuItem>
+        <SidebarMenuButton asChild isActive tooltip="Dashboard">
+          <Link href="/dashboard">
+            <LayoutDashboard />
+            <span>Dashboard</span>
+          </Link>
+        </SidebarMenuButton>
+      </SidebarMenuItem>
+    </AppSidebarShell>
   );
 }

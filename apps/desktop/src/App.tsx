@@ -1,26 +1,45 @@
+import { useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
+import { invoke } from "@tauri-apps/api/core";
 import { TRPCProvider } from "@zunftgewerk/app-core";
-import { SidebarProvider, SidebarInset } from "@zunftgewerk/ui";
+import {
+  SidebarProvider,
+  SidebarInset,
+  useSidebar,
+} from "@zunftgewerk/ui";
 import { AppSidebar } from "@/components/app-sidebar";
 import DashboardPage from "@/pages/dashboard";
-import ProjectsPage from "@/pages/projects";
-import CustomersPage from "@/pages/customers";
+
+function AppLayout() {
+  const { open } = useSidebar();
+
+  useEffect(() => {
+    invoke("set_traffic_lights_visible", { visible: open }).catch(
+      console.error,
+    );
+  }, [open]);
+
+  return (
+    <>
+      <div data-tauri-drag-region className="fixed inset-x-0 top-0 z-50 h-3" />
+      <AppSidebar />
+      <SidebarInset className="overflow-y-auto">
+        <div className="flex flex-col gap-6 px-6 pt-3 pb-6">
+          <Routes>
+            <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="*" element={<Navigate to="/dashboard" replace />} />
+          </Routes>
+        </div>
+      </SidebarInset>
+    </>
+  );
+}
 
 export default function App() {
   return (
     <TRPCProvider apiUrl="http://localhost:3001">
       <SidebarProvider>
-        <AppSidebar />
-        <SidebarInset>
-          <div className="flex flex-1 flex-col gap-6 p-6">
-            <Routes>
-              <Route path="/dashboard" element={<DashboardPage />} />
-              <Route path="/projects" element={<ProjectsPage />} />
-              <Route path="/customers" element={<CustomersPage />} />
-              <Route path="*" element={<Navigate to="/dashboard" replace />} />
-            </Routes>
-          </div>
-        </SidebarInset>
+        <AppLayout />
       </SidebarProvider>
     </TRPCProvider>
   );

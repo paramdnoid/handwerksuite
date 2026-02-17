@@ -1,5 +1,4 @@
-import { Link } from "react-router-dom";
-import { ChevronsUpDown, Home, LogOut } from "lucide-react";
+import { ChevronsUpDown, LogOut } from "lucide-react";
 import {
   Avatar,
   AvatarFallback,
@@ -18,6 +17,7 @@ import {
 export function NavUser() {
   const { isMobile } = useSidebar();
 
+  // TODO: Replace with useAuth() from @zunftgewerk/app-core once auth is integrated
   const user = {
     name: "Max Müller",
     email: "max@mueller-shk.de",
@@ -53,7 +53,7 @@ export function NavUser() {
           </DropdownMenuTrigger>
           <DropdownMenuContent
             className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
-            side={isMobile ? "bottom" : "right"}
+            side={isMobile ? "bottom" : "top"}
             align="end"
             sideOffset={4}
           >
@@ -70,13 +70,6 @@ export function NavUser() {
                 </div>
               </div>
             </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem asChild>
-              <Link to="/account">
-                <Home className="mr-2 size-4" />
-                Zum Account
-              </Link>
-            </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
               <LogOut className="mr-2 size-4" />

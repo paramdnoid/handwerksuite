@@ -135,6 +135,39 @@
 }
 
 /* ------------------------------------------------------------------ */
+/*  Sidebar & wrapper background                                       */
+/*  !important needed to override inline styles set by the shadcn/ui   */
+/*  Sidebar component which applies background via style prop          */
+/* ------------------------------------------------------------------ */
+
+[data-slot="sidebar"],
+[data-slot="sidebar-inner"] {
+  background: linear-gradient(180deg, oklch(0.97 0.005 250), oklch(0.98 0.003 250)) !important;
+}
+
+.group\/sidebar-wrapper {
+  background: linear-gradient(180deg, oklch(0.97 0.005 250), oklch(0.98 0.003 250)) !important;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Remove sidebar rail hover border                                   */
+/*  !important needed to override the Sidebar rail's built-in hover    */
+/* ------------------------------------------------------------------ */
+
+[data-slot="sidebar-rail"]:hover::after {
+  background-color: transparent !important;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Uniform inset border                                               */
+/*  !important needed to override SidebarInset's built-in box-shadow   */
+/* ------------------------------------------------------------------ */
+
+main[data-slot="sidebar-inset"] {
+  box-shadow: 0 0 0 1px color-mix(in oklch, var(--color-border) 50%, transparent) !important;
+}
+
+/* ------------------------------------------------------------------ */
 /*  Selection highlight                                                */
 /* ------------------------------------------------------------------ */
 

@@ -1,53 +1,25 @@
+import { Link } from "react-router-dom";
+import { LayoutDashboard } from "lucide-react";
 import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarHeader,
-  SidebarMenu,
+  AppSidebar as AppSidebarShell,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarRail,
 } from "@zunftgewerk/ui";
-import { NavMain } from "./nav-main";
 import { NavUser } from "./nav-user";
 
-export function AppSidebar({
-  ...props
-}: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar(
+  props: React.ComponentProps<typeof AppSidebarShell>,
+) {
   return (
-    <Sidebar collapsible="offcanvas" variant="inset" className="pt-[23px]" {...props}>
-      <SidebarHeader>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton
-              size="lg"
-              className="items-center"
-            >
-              <img
-                src="/logo.png"
-                alt="ZunftGewerk"
-                className="size-9 rounded-lg -ml-2"
-              />
-              <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">
-                  <span className="text-foreground">Zunft</span>
-                  <span className="text-muted-foreground">Gewerk</span>
-                </span>
-                <span className="truncate text-xs text-muted-foreground">
-                  Betriebsplattform
-                </span>
-              </div>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarHeader>
-      <SidebarContent>
-        <NavMain />
-      </SidebarContent>
-      <SidebarFooter>
-        <NavUser />
-      </SidebarFooter>
-      <SidebarRail />
-    </Sidebar>
+    <AppSidebarShell className="pt-5.75" subtitle="Desktop" footer={<NavUser />} {...props}>
+      <SidebarMenuItem>
+        <SidebarMenuButton asChild isActive tooltip="Dashboard">
+          <Link to="/dashboard">
+            <LayoutDashboard />
+            <span>Dashboard</span>
+          </Link>
+        </SidebarMenuButton>
+      </SidebarMenuItem>
+    </AppSidebarShell>
   );
 }

@@ -50,27 +50,6 @@
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
-  /* Animations */
-  --animate-accordion-down: accordion-down 0.2s ease-out;
-  --animate-accordion-up: accordion-up 0.2s ease-out;
-
-  @keyframes accordion-down {
-    from {
-      height: 0;
-    }
-    to {
-      height: var(--radix-accordion-content-height);
-    }
-  }
-
-  @keyframes accordion-up {
-    from {
-      height: var(--radix-accordion-content-height);
-    }
-    to {
-      height: 0;
-    }
-  }
 }
 
 /* ------------------------------------------------------------------ */
@@ -79,12 +58,6 @@
 
 @layer base {
   :root {
-    /* Enterprise Shadow System */
-    --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.06), 0 6px 16px rgba(0, 0, 0, 0.05);
-    --shadow-card-hover: 0 4px 20px rgba(0, 0, 0, 0.1), 0 12px 44px rgba(0, 0, 0, 0.06);
-    --shadow-elevated: 0 8px 30px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.06);
-    --shadow-glow: 0 0 40px rgba(249, 115, 22, 0.15);
-
     /* Focus Glow System */
     --focus-glow:
       0 0 0 2px var(--color-background),
@@ -104,12 +77,20 @@
   body {
     @apply bg-background text-foreground antialiased;
     overflow: hidden;
+    scrollbar-width: none;
     user-select: none;
+  }
+
+  [data-slot="sidebar-content"],
+  [data-slot="sidebar-inset"] {
+    scrollbar-width: none;
   }
 }
 
 /* ------------------------------------------------------------------ */
 /*  Desktop: sidebar & wrapper background                              */
+/*  !important needed to override inline styles set by the shadcn/ui   */
+/*  Sidebar component which applies background via style prop          */
 /* ------------------------------------------------------------------ */
 
 [data-slot="sidebar"],
@@ -123,6 +104,7 @@
 
 /* ------------------------------------------------------------------ */
 /*  Desktop: remove sidebar rail hover border                          */
+/*  !important needed to override the Sidebar rail's built-in hover    */
 /* ------------------------------------------------------------------ */
 
 [data-slot="sidebar-rail"]:hover::after {
@@ -131,6 +113,7 @@
 
 /* ------------------------------------------------------------------ */
 /*  Desktop: uniform inset border                                      */
+/*  !important needed to override SidebarInset's built-in box-shadow   */
 /* ------------------------------------------------------------------ */
 
 main[data-slot="sidebar-inset"] {
@@ -138,45 +121,15 @@ main[data-slot="sidebar-inset"] {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Desktop: window drag region                                        */
+/*  Desktop: drag cursor in drag region                                */
 /* ------------------------------------------------------------------ */
 
-.drag-region {
-  -webkit-app-region: drag;
+[data-tauri-drag-region] {
+  cursor: grab;
 }
 
-.drag-region button,
-.drag-region a,
-.drag-region [data-slot] {
-  -webkit-app-region: no-drag;
-}
-
-/* ------------------------------------------------------------------ */
-/*  Display font utility                                               */
-/* ------------------------------------------------------------------ */
-
-.font-display {
-  font-family: "Plus Jakarta Sans", var(--font-sans), system-ui, sans-serif;
-}
-
-/* ------------------------------------------------------------------ */
-/*  Enterprise card shadow utilities                                   */
-/* ------------------------------------------------------------------ */
-
-.shadow-card {
-  box-shadow: var(--shadow-card);
-}
-
-.shadow-card-hover {
-  box-shadow: var(--shadow-card-hover);
-}
-
-.shadow-elevated {
-  box-shadow: var(--shadow-elevated);
-}
-
-.shadow-glow {
-  box-shadow: var(--shadow-glow);
+[data-tauri-drag-region]:active {
+  cursor: grabbing;
 }
 
 /* ------------------------------------------------------------------ */
