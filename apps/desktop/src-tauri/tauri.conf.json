@@ -1,0 +1,35 @@
+{
+  "$schema": "https://raw.githubusercontent.com/tauri-apps/tauri/dev/crates/tauri-cli/schema.json",
+  "productName": "HandwerkSuite",
+  "version": "0.0.1",
+  "identifier": "de.handwerksuite.desktop",
+  "build": {
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:1420",
+    "beforeDevCommand": "pnpm vite dev",
+    "beforeBuildCommand": "pnpm vite build"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "HandwerkSuite",
+        "width": 1280,
+        "height": 800,
+        "minWidth": 900,
+        "minHeight": 600,
+        "decorations": true,
+        "resizable": true
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self'; connect-src 'self' http://localhost:*; style-src 'self' 'unsafe-inline'"
+    }
+  },
+  "plugins": {
+    "sql": {
+      "preload": {
+        "db": "sqlite:handwerksuite.db"
+      }
+    }
+  }
+}

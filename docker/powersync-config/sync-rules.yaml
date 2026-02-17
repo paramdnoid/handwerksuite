@@ -1,0 +1,19 @@
+# PowerSync Sync Rules for HandwerkSuite
+# Bucket-based data partitioning for multi-tenant isolation
+
+bucket_definitions:
+  by_tenant:
+    parameters:
+      - SELECT token_parameters.tenant_id AS tenant_id
+    data:
+      - SELECT id, tenant_id, customer_id, title, description, status,
+               estimated_hours, actual_hours, estimated_cost, actual_cost,
+               encrypted_notes, start_date, end_date, created_at, updated_at
+        FROM projects
+        WHERE projects.tenant_id = bucket.tenant_id
+
+      - SELECT id, tenant_id, type, company_name, first_name, last_name,
+               encrypted_email, encrypted_phone, encrypted_address,
+               tax_id, notes, created_at, updated_at
+        FROM customers
+        WHERE customers.tenant_id = bucket.tenant_id

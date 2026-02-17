@@ -1,0 +1,26 @@
+# PowerSync Service Configuration
+# See: https://docs.powersync.com/self-hosting/configuration
+
+replication:
+  connections:
+    - type: postgresql
+      uri: postgresql://handwerksuite:handwerksuite_dev_password@postgres:5432/handwerksuite
+      # Slot name for logical replication
+      slot_name: powersync_slot
+      # Publication for change tracking
+      publication_name: powersync_pub
+
+storage:
+  type: memory
+
+# Client authentication
+client_auth:
+  # HMAC authentication using shared secret
+  supabase_jwt_secret: your-jwt-secret-min-32-characters
+
+# Sync rules
+sync_rules:
+  path: /config/sync-rules.yaml
+
+api:
+  port: 8080

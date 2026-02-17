@@ -1,0 +1,35 @@
+{
+  "name": "@handwerksuite/landing",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev --port 3000",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf .next .turbo"
+  },
+  "dependencies": {
+    "@handwerksuite/api": "workspace:*",
+    "@handwerksuite/app-core": "workspace:*",
+    "@handwerksuite/auth": "workspace:*",
+    "@handwerksuite/types": "workspace:*",
+    "@handwerksuite/ui": "workspace:*",
+    "@trpc/server": "^11.0.0",
+    "next": "^15.3.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@handwerksuite/typescript-config": "workspace:*",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "tailwindcss": "^4.0.0",
+    "@tailwindcss/postcss": "^4.0.0",
+    "postcss": "^8.5.0",
+    "typescript": "^5.7.0"
+  }
+}

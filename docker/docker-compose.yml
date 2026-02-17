@@ -1,0 +1,73 @@
+name: handwerksuite
+
+services:
+  # ── PostgreSQL ──────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: handwerksuite-postgres
+    environment:
+      POSTGRES_DB: handwerksuite
+      POSTGRES_USER: handwerksuite
+      POSTGRES_PASSWORD: handwerksuite_dev_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-scripts:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U handwerksuite"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ── OpenBao (Vault Fork) ───────────────────────────────
+  openbao:
+    image: quay.io/openbao/openbao:latest
+    container_name: handwerksuite-openbao
+    cap_add:
+      - IPC_LOCK
+    environment:
+      BAO_DEV_ROOT_TOKEN_ID: dev-vault-token
+      BAO_DEV_LISTEN_ADDRESS: "0.0.0.0:8200"
+    ports:
+      - "8200:8200"
+    command: server -dev
+    healthcheck:
+      test: ["CMD", "bao", "status"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # ── PowerSync Service ──────────────────────────────────
+  powersync:
+    image: journeyapps/powersync-service:latest
+    container_name: handwerksuite-powersync
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      POWERSYNC_CONFIG: /config/powersync.yaml
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./powersync-config:/config
+
+  # ── Lago Billing ───────────────────────────────────────
+  # Lago requires multiple services. For development, use Lago's
+  # official docker-compose. See: https://github.com/getlago/lago
+  # Below is a placeholder for the API service.
+  lago-api:
+    image: getlago/api:latest
+    container_name: handwerksuite-lago-api
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://handwerksuite:handwerksuite_dev_password@postgres:5432/lago
+      LAGO_API_URL: http://localhost:3200
+      SECRET_KEY_BASE: change-me-in-production
+    ports:
+      - "3200:3000"
+
+volumes:
+  postgres_data:

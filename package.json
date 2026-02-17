@@ -1,0 +1,31 @@
+{
+  "name": "handwerksuite",
+  "private": true,
+  "packageManager": "pnpm@9.15.4",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "dev:landing": "turbo run dev --filter=@handwerksuite/landing",
+    "dev:web": "turbo run dev --filter=@handwerksuite/web",
+    "dev:desktop": "turbo run dev --filter=@handwerksuite/desktop",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "test:e2e": "turbo run test:e2e",
+    "db:generate": "turbo run db:generate --filter=@handwerksuite/db",
+    "db:migrate": "turbo run db:migrate --filter=@handwerksuite/db",
+    "db:seed": "turbo run db:seed --filter=@handwerksuite/db",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md,css}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md,css}\"",
+    "clean": "turbo run clean && rm -rf node_modules",
+    "typecheck": "turbo run typecheck"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.0",
+    "prettier": "^3.4.0",
+    "turbo": "^2.7.0",
+    "typescript": "^5.7.0"
+  }
+}

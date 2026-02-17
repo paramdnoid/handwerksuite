@@ -1,0 +1,45 @@
+{
+  "name": "@handwerksuite/app-core",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./hooks/*": {
+      "types": "./src/hooks/*.ts",
+      "default": "./src/hooks/*.ts"
+    },
+    "./features/*": {
+      "types": "./src/features/*/index.ts",
+      "default": "./src/features/*/index.ts"
+    }
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist .turbo"
+  },
+  "dependencies": {
+    "@trpc/client": "^11.0.0",
+    "@trpc/react-query": "^11.0.0",
+    "@tanstack/react-query": "^5.62.0",
+    "superjson": "^2.2.0"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@handwerksuite/api": "workspace:*",
+    "@handwerksuite/auth": "workspace:*",
+    "@handwerksuite/sync": "workspace:*",
+    "@handwerksuite/types": "workspace:*",
+    "@handwerksuite/ui": "workspace:*",
+    "@handwerksuite/typescript-config": "workspace:*",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "typescript": "^5.7.0"
+  }
+}
