@@ -4,11 +4,14 @@ import { z } from "zod";
 import type { Session, User } from "better-auth";
 import { hasPermission, type Permission, type Role } from "@zunftgewerk/auth";
 
+// ── Context ──────────────────────────────────────────────
+
 export interface TRPCContext {
   user: User | null;
   session: Session | null;
-  tenantId: string | null;
-  role: Role | null;
+  companyId: string | null;
+  companyRole: Role | null;
+  craftType: string | null;
   headers: Headers;
 }
 
@@ -16,17 +19,21 @@ export async function createTRPCContext(opts: {
   headers: Headers;
   user?: User | null;
   session?: Session | null;
-  tenantId?: string | null;
-  role?: Role | null;
+  companyId?: string | null;
+  companyRole?: Role | null;
+  craftType?: string | null;
 }): Promise<TRPCContext> {
   return {
     user: opts.user ?? null,
     session: opts.session ?? null,
-    tenantId: opts.tenantId ?? null,
-    role: opts.role ?? null,
+    companyId: opts.companyId ?? null,
+    companyRole: opts.companyRole ?? null,
+    craftType: opts.craftType ?? null,
     headers: opts.headers,
   };
 }
+
+// ── tRPC Init ────────────────────────────────────────────
 
 const t = initTRPC.context<TRPCContext>().create({
   transformer: superjson,
@@ -45,9 +52,8 @@ const t = initTRPC.context<TRPCContext>().create({
 export const createTRPCRouter = t.router;
 export const publicProcedure = t.procedure;
 
-/**
- * Middleware: Requires authenticated user
- */
+// ── Middleware: Authenticated User ───────────────────────
+
 const enforceAuth = t.middleware(({ ctx, next }) => {
   if (!ctx.user || !ctx.session) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
@@ -63,14 +69,13 @@ const enforceAuth = t.middleware(({ ctx, next }) => {
 
 export const protectedProcedure = t.procedure.use(enforceAuth);
 
-/**
- * Middleware: Requires tenant context (multi-tenancy)
- */
-const enforceTenant = t.middleware(({ ctx, next }) => {
-  if (!ctx.user || !ctx.session || !ctx.tenantId || !ctx.role) {
+// ── Middleware: Company Context ──────────────────────────
+
+const enforceCompany = t.middleware(({ ctx, next }) => {
+  if (!ctx.user || !ctx.session || !ctx.companyId || !ctx.companyRole) {
     throw new TRPCError({
       code: "UNAUTHORIZED",
-      message: "Tenant context required",
+      message: "Company context required",
     });
   }
   return next({
@@ -78,20 +83,22 @@ const enforceTenant = t.middleware(({ ctx, next }) => {
       ...ctx,
       user: ctx.user,
       session: ctx.session,
-      tenantId: ctx.tenantId,
-      role: ctx.role,
+      companyId: ctx.companyId,
+      companyRole: ctx.companyRole,
+      craftType: ctx.craftType,
     },
   });
 });
 
-export const tenantProcedure = t.procedure.use(enforceAuth).use(enforceTenant);
+export const companyProcedure = t.procedure
+  .use(enforceAuth)
+  .use(enforceCompany);
 
-/**
- * Creates a permission-checked procedure
- */
+// ── Permission-checked Procedure ─────────────────────────
+
 export function withPermission(permission: Permission) {
-  return tenantProcedure.use(({ ctx, next }) => {
-    if (!hasPermission(ctx.role, permission)) {
+  return companyProcedure.use(({ ctx, next }) => {
+    if (!hasPermission(ctx.companyRole, permission)) {
       throw new TRPCError({
         code: "FORBIDDEN",
         message: `Missing permission: ${permission}`,

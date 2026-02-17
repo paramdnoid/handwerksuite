@@ -1,14 +1,33 @@
 import { betterAuth } from "better-auth";
-import { organization, twoFactor } from "better-auth/plugins";
+import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import { db } from "@zunftgewerk/db/client";
+import {
+  users,
+  sessions,
+  accounts,
+  verifications,
+} from "@zunftgewerk/db/schema";
 
 export const auth = betterAuth({
-  database: {
-    type: "postgres",
-    url: process.env.DATABASE_URL!,
-  },
+  database: drizzleAdapter(db, {
+    provider: "pg",
+    schema: {
+      user: users,
+      session: sessions,
+      account: accounts,
+      verification: verifications,
+    },
+  }),
 
   secret: process.env.BETTER_AUTH_SECRET!,
   baseURL: process.env.BETTER_AUTH_URL,
+
+  advanced: {
+    generateId: ({ model, size }) => crypto.randomUUID(),
+    database: {
+      generateId: "uuid",
+    },
+  },
 
   emailAndPassword: {
     enabled: true,
@@ -29,34 +48,9 @@ export const auth = betterAuth({
     },
   },
 
-  plugins: [
-    organization({
-      allowUserToCreateOrganization: true,
-      organizationLimit: 5,
-      creatorRole: "owner",
-      memberRoleHierarchy: ["owner", "admin", "manager", "employee", "readonly"],
-    }),
-    twoFactor({
-      issuer: "ZunftGewerk",
-    }),
-  ],
-
   session: {
-    expiresIn: 60 * 60 * 24 * 7, // 7 days
-    updateAge: 60 * 60 * 24, // 1 day
-  },
-
-  user: {
-    additionalFields: {
-      craftType: {
-        type: "string",
-        required: false,
-      },
-      hwkNumber: {
-        type: "string",
-        required: false,
-      },
-    },
+    expiresIn: 60 * 60 * 24 * 7,
+    updateAge: 60 * 60 * 24,
   },
 
   rateLimit: {

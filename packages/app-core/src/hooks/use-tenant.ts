@@ -2,35 +2,36 @@
 
 import { useEffect, useState } from "react";
 
-interface TenantContext {
-  tenantId: string | null;
-  tenantName: string | null;
+interface CompanyContext {
+  companyId: string | null;
+  companyName: string | null;
   role: string | null;
+  craftType: string | null;
   isLoading: boolean;
-  switchTenant: (tenantId: string) => void;
+  switchCompany: (companyId: string) => void;
 }
 
-export function useTenant(): TenantContext {
-  const [tenantId, setTenantId] = useState<string | null>(null);
-  const [tenantName, setTenantName] = useState<string | null>(null);
+export function useCompany(): CompanyContext {
+  const [companyId, setCompanyId] = useState<string | null>(null);
+  const [companyName, setCompanyName] = useState<string | null>(null);
   const [role, setRole] = useState<string | null>(null);
+  const [craftType, setCraftType] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Load active tenant from localStorage or session
-    const storedTenantId = localStorage.getItem("zunftgewerk:tenant_id");
-    if (storedTenantId) {
-      setTenantId(storedTenantId);
-      // TODO: Fetch tenant details from API
+    const storedCompanyId = localStorage.getItem("zunftgewerk:company_id");
+    if (storedCompanyId) {
+      setCompanyId(storedCompanyId);
+      // TODO: Fetch company details from API
     }
     setIsLoading(false);
   }, []);
 
-  const switchTenant = (newTenantId: string) => {
-    setTenantId(newTenantId);
-    localStorage.setItem("zunftgewerk:tenant_id", newTenantId);
-    // TODO: Refresh sync connection with new tenant context
+  const switchCompany = (newCompanyId: string) => {
+    setCompanyId(newCompanyId);
+    localStorage.setItem("zunftgewerk:company_id", newCompanyId);
+    // TODO: Refresh sync connection with new company context
   };
 
-  return { tenantId, tenantName, role, isLoading, switchTenant };
+  return { companyId, companyName, role, craftType, isLoading, switchCompany };
 }

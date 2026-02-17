@@ -47,6 +47,9 @@
     "tailwindcss": "^4.0.0"
   },
   "devDependencies": {
+    "@radix-ui/react-progress": "^1.1.8",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
     "@zunftgewerk/typescript-config": "workspace:*",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

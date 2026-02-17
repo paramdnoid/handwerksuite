@@ -27,9 +27,7 @@
   },
   "plugins": {
     "sql": {
-      "preload": {
-        "db": "sqlite:zunftgewerk.db"
-      }
+      "preload": ["sqlite:zunftgewerk.db"]
     }
   }
 }

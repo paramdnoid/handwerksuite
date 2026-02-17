@@ -4,18 +4,10 @@ import {
   text,
   timestamp,
   boolean,
-  pgEnum,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
-import { tenants } from "./tenants";
 
-export const tenantRoleEnum = pgEnum("tenant_role", [
-  "owner",
-  "admin",
-  "manager",
-  "employee",
-  "readonly",
-]);
+// ── Users ────────────────────────────────────────────────
 
 export const users = pgTable("users", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -23,9 +15,15 @@ export const users = pgTable("users", {
   name: text("name").notNull(),
   emailVerified: boolean("email_verified").default(false).notNull(),
   image: text("image"),
-  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
-  updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
 });
+
+// ── Sessions ─────────────────────────────────────────────
 
 export const sessions = pgTable("sessions", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -36,8 +34,15 @@ export const sessions = pgTable("sessions", {
   expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
   ipAddress: text("ip_address"),
   userAgent: text("user_agent"),
-  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
 });
+
+// ── Accounts (OAuth Providers) ───────────────────────────
 
 export const accounts = pgTable("accounts", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -48,26 +53,38 @@ export const accounts = pgTable("accounts", {
   providerAccountId: text("provider_account_id").notNull(),
   accessToken: text("access_token"),
   refreshToken: text("refresh_token"),
+  idToken: text("id_token"),
+  scope: text("scope"),
+  password: text("password"),
   expiresAt: timestamp("expires_at", { withTimezone: true }),
-  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
 });
 
-export const tenantMembers = pgTable("tenant_members", {
+// ── Verification (email verification, password reset) ─────
+
+export const verifications = pgTable("verifications", {
   id: uuid("id").primaryKey().defaultRandom(),
-  tenantId: uuid("tenant_id")
-    .references(() => tenants.id, { onDelete: "cascade" })
+  identifier: text("identifier").notNull(),
+  value: text("value").notNull(),
+  expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .defaultNow()
     .notNull(),
-  userId: uuid("user_id")
-    .references(() => users.id, { onDelete: "cascade" })
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .defaultNow()
     .notNull(),
-  role: tenantRoleEnum("role").notNull().default("employee"),
-  joinedAt: timestamp("joined_at", { withTimezone: true }).defaultNow().notNull(),
 });
+
+// ── Relations ────────────────────────────────────────────
 
 export const usersRelations = relations(users, ({ many }) => ({
   sessions: many(sessions),
   accounts: many(accounts),
-  tenantMemberships: many(tenantMembers),
 }));
 
 export const sessionsRelations = relations(sessions, ({ one }) => ({
@@ -77,13 +94,9 @@ export const sessionsRelations = relations(sessions, ({ one }) => ({
   }),
 }));
 
-export const tenantMembersRelations = relations(tenantMembers, ({ one }) => ({
-  tenant: one(tenants, {
-    fields: [tenantMembers.tenantId],
-    references: [tenants.id],
-  }),
+export const accountsRelations = relations(accounts, ({ one }) => ({
   user: one(users, {
-    fields: [tenantMembers.userId],
+    fields: [accounts.userId],
     references: [users.id],
   }),
 }));

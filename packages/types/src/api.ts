@@ -32,12 +32,13 @@ export interface SearchParams extends PaginationParams {
 
 export interface AuditLogEntry {
   id: string;
-  tenantId: string;
+  companyId: string;
   userId: string;
   action: string;
   resource: string;
   resourceId: string;
-  details: Record<string, unknown>;
+  oldValues: Record<string, unknown> | null;
+  newValues: Record<string, unknown> | null;
   ipAddress: string | null;
   timestamp: Date;
 }

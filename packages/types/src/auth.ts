@@ -1,5 +1,7 @@
-import type { TenantRole, TenantType } from "./tenant";
+import type { CompanyRole, CompanyType } from "./company";
 import type { CraftTypeValue } from "./craft-types";
+
+// ── User ─────────────────────────────────────────────────
 
 export interface User {
   id: string;
@@ -11,21 +13,27 @@ export interface User {
   updatedAt: Date;
 }
 
+// ── Session ──────────────────────────────────────────────
+
 export interface Session {
   id: string;
   userId: string;
-  tenantId: string;
+  companyId: string;
   expiresAt: Date;
   ipAddress: string | null;
   userAgent: string | null;
 }
 
+// ── User Profile ─────────────────────────────────────────
+
 export interface UserProfile extends User {
-  activeTenantId: string | null;
-  role: TenantRole | null;
+  activeCompanyId: string | null;
+  companyRole: CompanyRole | null;
   craftType: CraftTypeValue | null;
-  tenantType: TenantType | null;
+  companyType: CompanyType | null;
 }
+
+// ── Auth State ───────────────────────────────────────────
 
 export interface AuthState {
   user: User | null;
@@ -33,5 +41,7 @@ export interface AuthState {
   isLoading: boolean;
   isAuthenticated: boolean;
 }
+
+// ── Auth Provider ────────────────────────────────────────
 
 export type AuthProvider = "email" | "google" | "microsoft";

@@ -1,10 +1,12 @@
 import { createTRPCRouter } from "./trpc";
-import { tenantRouter } from "./routers/tenant";
+import { companyRouter } from "./routers/company";
+import { moduleRouter } from "./routers/modules";
 import { projectRouter } from "./routers/project";
 import { customerRouter } from "./routers/customer";
 
 export const appRouter = createTRPCRouter({
-  tenant: tenantRouter,
+  company: companyRouter,
+  module: moduleRouter,
   project: projectRouter,
   customer: customerRouter,
 });

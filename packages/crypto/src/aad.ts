@@ -2,15 +2,15 @@ import { createHash } from "node:crypto";
 
 /**
  * Builds Additional Authenticated Data (AAD) for AES-256-GCM.
- * The AAD binds the ciphertext to a specific tenant, record, and field,
- * preventing cross-tenant data access even if DEKs are compromised.
+ * The AAD binds the ciphertext to a specific company, record, and field,
+ * preventing cross-company data access even if DEKs are compromised.
  */
 export function buildAAD(
-  tenantId: string,
+  companyId: string,
   recordId: string,
   fieldName: string,
 ): Buffer {
-  const canonical = `v1:${tenantId}:${recordId}:${fieldName}`;
+  const canonical = `v1:${companyId}:${recordId}:${fieldName}`;
   return Buffer.from(canonical, "utf-8");
 }
 
@@ -20,22 +20,22 @@ export function buildAAD(
  */
 export function verifyAAD(
   aad: Buffer,
-  tenantId: string,
+  companyId: string,
   recordId: string,
   fieldName: string,
 ): boolean {
-  const expected = buildAAD(tenantId, recordId, fieldName);
+  const expected = buildAAD(companyId, recordId, fieldName);
   if (aad.length !== expected.length) return false;
   return aad.every((byte, i) => byte === expected[i]);
 }
 
 /**
- * Creates a deterministic key name for a tenant's KEK in OpenBao Transit.
+ * Creates a deterministic key name for a company's KEK in OpenBao Transit.
  */
-export function tenantKeyName(tenantId: string): string {
+export function companyKeyName(companyId: string): string {
   const hash = createHash("sha256")
-    .update(tenantId)
+    .update(companyId)
     .digest("hex")
     .slice(0, 12);
-  return `tenant-${hash}-kek`;
+  return `company-${hash}-kek`;
 }

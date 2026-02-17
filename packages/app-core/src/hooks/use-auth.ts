@@ -19,8 +19,8 @@ export function useAuth(): AuthState & {
   useEffect(() => {
     authClient.getSession().then((session) => {
       setState({
-        user: session.data?.user ?? null,
-        session: session.data?.session ?? null,
+        user: (session.data?.user as any) ?? null,
+        session: (session.data?.session as any) ?? null,
         isLoading: false,
         isAuthenticated: !!session.data?.user,
       });
@@ -30,12 +30,13 @@ export function useAuth(): AuthState & {
   const signIn = async (email: string, password: string) => {
     setState((prev) => ({ ...prev, isLoading: true }));
     const result = await authClient.signIn.email({ email, password });
-    if (result.data) {
+    const data = result.data as any;
+    if (data) {
       setState({
-        user: result.data.user as any,
-        session: result.data.session as any,
+        user: data.user ?? null,
+        session: data.session ?? null,
         isLoading: false,
-        isAuthenticated: true,
+        isAuthenticated: !!data.user,
       });
     }
   };
@@ -43,12 +44,13 @@ export function useAuth(): AuthState & {
   const signUp = async (email: string, password: string, name: string) => {
     setState((prev) => ({ ...prev, isLoading: true }));
     const result = await authClient.signUp.email({ email, password, name });
-    if (result.data) {
+    const data = result.data as any;
+    if (data) {
       setState({
-        user: result.data.user as any,
-        session: result.data.session as any,
+        user: data.user ?? null,
+        session: data.session ?? null,
         isLoading: false,
-        isAuthenticated: true,
+        isAuthenticated: !!data.user,
       });
     }
   };

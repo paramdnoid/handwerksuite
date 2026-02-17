@@ -16,7 +16,7 @@ export interface EncryptedEnvelope {
 }
 
 export interface EncryptionContext {
-  tenantId: string;
+  companyId: string;
   recordId: string;
   fieldName: string;
 }

@@ -22,10 +22,10 @@
     "clean": "rm -rf dist .turbo"
   },
   "dependencies": {
+    "@zunftgewerk/db": "workspace:*",
     "better-auth": "^1.4.0"
   },
   "devDependencies": {
-    "@zunftgewerk/db": "workspace:*",
     "@zunftgewerk/types": "workspace:*",
     "@zunftgewerk/typescript-config": "workspace:*",
     "typescript": "^5.7.0"

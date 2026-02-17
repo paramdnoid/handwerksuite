@@ -1,19 +1,29 @@
 # PowerSync Sync Rules for ZunftGewerk
-# Bucket-based data partitioning for multi-tenant isolation
+# Bucket-based data partitioning for multi-company isolation
 
 bucket_definitions:
-  by_tenant:
+  by_company:
     parameters:
-      - SELECT token_parameters.tenant_id AS tenant_id
+      - SELECT token_parameters.company_id AS company_id
     data:
-      - SELECT id, tenant_id, customer_id, title, description, status,
+      - SELECT id, company_id, project_number, customer_id, assigned_to,
+        title, description, status, priority,
         estimated_hours, actual_hours, estimated_cost, actual_cost,
-        encrypted_notes, start_date, end_date, created_at, updated_at
+        encrypted_notes, start_date, end_date, completed_at,
+        created_by, updated_by, created_at, updated_at, deleted_at
         FROM projects
-        WHERE projects.tenant_id = bucket.tenant_id
+        WHERE projects.company_id = bucket.company_id
+          AND projects.deleted_at IS NULL
 
-      - SELECT id, tenant_id, type, company_name, first_name, last_name,
+      - SELECT id, company_id, customer_number, type, company_name,
+        first_name, last_name,
         encrypted_email, encrypted_phone, encrypted_address,
-        tax_id, notes, created_at, updated_at
+        tax_id, notes, created_by, updated_by, created_at, updated_at, deleted_at
         FROM customers
-        WHERE customers.tenant_id = bucket.tenant_id
+        WHERE customers.company_id = bucket.company_id
+          AND customers.deleted_at IS NULL
+
+      - SELECT id, company_id, module_id, is_active,
+        activated_at, deactivated_at
+        FROM company_modules
+        WHERE company_modules.company_id = bucket.company_id

@@ -1,13 +1,13 @@
 import { VaultClient } from "./vault-client";
-import { tenantKeyName } from "./aad";
+import { companyKeyName } from "./aad";
 import type { VaultConfig } from "./types";
 
 /**
  * Manages the multi-level key hierarchy:
  *
  * Master Key (in OpenBao/HSM)
- *   └── KEK (Key Encryption Key) – per tenant, managed by OpenBao Transit
- *       └── DEK (Data Encryption Key) – per record/field, encrypted by KEK
+ *   +-- KEK (Key Encryption Key) -- per company, managed by OpenBao Transit
+ *       +-- DEK (Data Encryption Key) -- per record/field, encrypted by KEK
  */
 export class KeyHierarchy {
   private vault: VaultClient;
@@ -17,11 +17,11 @@ export class KeyHierarchy {
   }
 
   /**
-   * Provisions a new KEK for a tenant in OpenBao Transit.
-   * Called during tenant onboarding.
+   * Provisions a new KEK for a company in OpenBao Transit.
+   * Called during company onboarding.
    */
-  async provisionTenantKey(tenantId: string): Promise<void> {
-    const keyName = tenantKeyName(tenantId);
+  async provisionCompanyKey(companyId: string): Promise<void> {
+    const keyName = companyKeyName(companyId);
     await this.vault.createTransitKey(keyName, {
       type: "aes256-gcm96",
       exportable: false,
@@ -31,22 +31,22 @@ export class KeyHierarchy {
   }
 
   /**
-   * Rotates a tenant's KEK. Existing DEKs remain valid
+   * Rotates a company's KEK. Existing DEKs remain valid
    * (OpenBao Transit supports versioned decryption).
    */
-  async rotateTenantKey(tenantId: string): Promise<void> {
-    const keyName = tenantKeyName(tenantId);
+  async rotateCompanyKey(companyId: string): Promise<void> {
+    const keyName = companyKeyName(companyId);
     await this.vault.rotateTransitKey(keyName);
   }
 
   /**
-   * Wraps (encrypts) a DEK using the tenant's KEK via OpenBao Transit.
+   * Wraps (encrypts) a DEK using the company's KEK via OpenBao Transit.
    */
   async wrapDEK(
-    tenantId: string,
+    companyId: string,
     dek: Buffer,
   ): Promise<{ encryptedDek: string; dekVersion: number }> {
-    const keyName = tenantKeyName(tenantId);
+    const keyName = companyKeyName(companyId);
     const result = await this.vault.transitEncrypt(keyName, dek);
     return {
       encryptedDek: result.ciphertext,
@@ -55,19 +55,19 @@ export class KeyHierarchy {
   }
 
   /**
-   * Unwraps (decrypts) a DEK using the tenant's KEK via OpenBao Transit.
+   * Unwraps (decrypts) a DEK using the company's KEK via OpenBao Transit.
    */
-  async unwrapDEK(tenantId: string, encryptedDek: string): Promise<Buffer> {
-    const _keyName = tenantKeyName(tenantId);
+  async unwrapDEK(companyId: string, encryptedDek: string): Promise<Buffer> {
+    const _keyName = companyKeyName(companyId);
     return this.vault.transitDecrypt(encryptedDek);
   }
 
   /**
-   * Deletes a tenant's KEK. IRREVERSIBLE – all encrypted data becomes unrecoverable.
-   * Use only for tenant offboarding / data deletion (DSGVO Art. 17).
+   * Deletes a company's KEK. IRREVERSIBLE -- all encrypted data becomes unrecoverable.
+   * Use only for company offboarding / data deletion (DSGVO Art. 17).
    */
-  async destroyTenantKey(tenantId: string): Promise<void> {
-    const keyName = tenantKeyName(tenantId);
+  async destroyCompanyKey(companyId: string): Promise<void> {
+    const keyName = companyKeyName(companyId);
     await this.vault.deleteTransitKey(keyName);
   }
 }

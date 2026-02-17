@@ -10,7 +10,7 @@ export const customerRouter = createTRPCRouter({
       search: z.string().optional(),
     }),
   ).query(async ({ ctx, input }) => {
-    // TODO: query customers with tenant isolation + field decryption
+    // TODO: query customers with company isolation + field decryption
     return {
       customers: [],
       totalCount: 0,

@@ -1,20 +1,30 @@
 # PowerSync Sync Rules
-# Defines which data is synced to which clients based on tenant isolation.
+# Defines which data is synced to which clients based on company isolation.
 # See: https://docs.powersync.com/usage/sync-rules
 
 bucket_definitions:
-  by_tenant:
+  by_company:
     parameters:
-      - SELECT token_parameters.tenant_id AS tenant_id
+      - SELECT token_parameters.company_id AS company_id
     data:
-      - SELECT id, tenant_id, customer_id, title, description, status,
+      - SELECT id, company_id, project_number, customer_id, assigned_to,
+               title, description, status, priority,
                estimated_hours, actual_hours, estimated_cost, actual_cost,
-               encrypted_notes, start_date, end_date, created_at, updated_at
+               encrypted_notes, start_date, end_date, completed_at,
+               created_by, updated_by, created_at, updated_at, deleted_at
         FROM projects
-        WHERE tenant_id = bucket.tenant_id
+        WHERE company_id = bucket.company_id
+          AND deleted_at IS NULL
 
-      - SELECT id, tenant_id, type, company_name, first_name, last_name,
+      - SELECT id, company_id, customer_number, type, company_name,
+               first_name, last_name,
                encrypted_email, encrypted_phone, encrypted_address,
-               tax_id, notes, created_at, updated_at
+               tax_id, notes, created_by, updated_by, created_at, updated_at, deleted_at
         FROM customers
-        WHERE tenant_id = bucket.tenant_id
+        WHERE company_id = bucket.company_id
+          AND deleted_at IS NULL
+
+      - SELECT id, company_id, module_id, is_active,
+               activated_at, deactivated_at
+        FROM company_modules
+        WHERE company_id = bucket.company_id

@@ -1,227 +1,74 @@
-import Link from "next/link";
-import {
-  Button,
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@zunftgewerk/ui";
+import { Header } from '@/components/header'
+import { HeroSection } from '@/components/sections/hero-section'
+import { StatsSection } from '@/components/sections/stats-section'
+import { SocialProofSection } from '@/components/sections/social-proof-section'
+import { TradesSection } from '@/components/sections/trades-section'
+import { FeaturesSection } from '@/components/sections/features-section'
+import { HowItWorksSection } from '@/components/sections/how-it-works-section'
+import { TestimonialsSection } from '@/components/sections/testimonials-section'
+import { PricingSection } from '@/components/sections/pricing-section'
+import { FaqSection } from '@/components/sections/faq-section'
+import { CtaSection } from '@/components/sections/cta-section'
+import { Footer } from '@/components/sections/footer'
+import { faqs } from '@/content/faqs'
 
-const features = [
-  {
-    title: "Projekte verwalten",
-    description:
-      "Behalten Sie alle Aufträge im Blick – von der Planung bis zur Abrechnung.",
+const softwareJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: 'ZunftGewerk',
+  applicationCategory: 'BusinessApplication',
+  operatingSystem: 'Web, iOS, Android, Windows, macOS, Linux',
+  description: 'Die All-in-One Handwerkersoftware für Kaminfeger, Maler und SHK-Betriebe.',
+  offers: {
+    '@type': 'AggregateOffer',
+    priceCurrency: 'EUR',
+    lowPrice: '49',
+    highPrice: '99',
+    offerCount: 3,
   },
-  {
-    title: "Offline-fähig",
-    description:
-      "Arbeiten Sie auf der Baustelle ohne Internet. Daten synchronisieren automatisch.",
-  },
-  {
-    title: "Ende-zu-Ende verschlüsselt",
-    description:
-      "AES-256-GCM Verschlüsselung mit Enterprise Key Management. DSGVO-konform.",
-  },
-  {
-    title: "Alle Geräte",
-    description:
-      "Web, Desktop (Mac & Windows) und Mobile (iOS & Android) – eine Plattform.",
-  },
-  {
-    title: "Kundenverwaltung",
-    description:
-      "Kontaktdaten, Projekthistorie und Kommunikation an einem Ort.",
-  },
-  {
-    title: "Behörden-Schnittstelle",
-    description:
-      "Handwerkskammern und Behörden können zugewiesene Betriebe sicher einsehen.",
-  },
-];
+}
+
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((faq) => ({
+    '@type': 'Question',
+    name: faq.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: faq.answer,
+    },
+  })),
+}
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen flex flex-col">
-      {/* Header */}
-      <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
-        <div className="container mx-auto flex h-16 items-center justify-between px-4">
-          <div className="flex items-center gap-2">
-            <span className="text-xl font-bold text-primary">
-              ZunftGewerk
-            </span>
-          </div>
-          <nav className="flex items-center gap-4">
-            <Link
-              href="#features"
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Funktionen
-            </Link>
-            <Link
-              href="#pricing"
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Preise
-            </Link>
-            <Link href="/auth/login">
-              <Button variant="ghost" size="sm">
-                Anmelden
-              </Button>
-            </Link>
-            <Link href="/auth/register">
-              <Button size="sm">Kostenlos starten</Button>
-            </Link>
-          </nav>
-        </div>
-      </header>
+    <div className="min-h-screen">
+      <Header />
 
-      {/* Hero */}
-      <section className="container mx-auto px-4 py-24 text-center">
-        <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">
-          Die digitale Plattform
-          <br />
-          <span className="text-primary">für Handwerksbetriebe</span>
-        </h1>
-        <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
-          Projekte, Kunden und Rechnungen verwalten – offline-fähig,
-          verschlüsselt und auf allen Geräten verfügbar. Entwickelt für
-          das deutsche Handwerk.
-        </p>
-        <div className="mt-10 flex items-center justify-center gap-4">
-          <Link href="/auth/register">
-            <Button size="lg">Jetzt kostenlos testen</Button>
-          </Link>
-          <Link href="#features">
-            <Button variant="outline" size="lg">
-              Mehr erfahren
-            </Button>
-          </Link>
-        </div>
-      </section>
+      <main id="main-content">
+        <HeroSection />
+        <StatsSection />
+        <SocialProofSection />
+        <TradesSection />
+        <FeaturesSection />
+        <HowItWorksSection />
+        <TestimonialsSection />
+        <PricingSection />
+        <FaqSection />
+        <CtaSection />
+      </main>
 
-      {/* Features */}
-      <section id="features" className="container mx-auto px-4 py-24">
-        <h2 className="text-3xl font-bold text-center mb-12">
-          Alles was Ihr Betrieb braucht
-        </h2>
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {features.map((feature) => (
-            <Card key={feature.title}>
-              <CardHeader>
-                <CardTitle>{feature.title}</CardTitle>
-                <CardDescription>{feature.description}</CardDescription>
-              </CardHeader>
-            </Card>
-          ))}
-        </div>
-      </section>
+      <Footer />
 
-      {/* Pricing placeholder */}
-      <section id="pricing" className="container mx-auto px-4 py-24">
-        <h2 className="text-3xl font-bold text-center mb-12">
-          Faire Preise für jede Betriebsgröße
-        </h2>
-        <div className="grid gap-8 sm:grid-cols-3 max-w-5xl mx-auto">
-          {[
-            {
-              name: "Starter",
-              price: "29",
-              desc: "Für Einzelunternehmer",
-              features: [
-                "1 Benutzer",
-                "50 Projekte",
-                "Web-App",
-                "E-Mail-Support",
-              ],
-            },
-            {
-              name: "Professional",
-              price: "79",
-              desc: "Für wachsende Betriebe",
-              features: [
-                "10 Benutzer",
-                "Unbegrenzte Projekte",
-                "Alle Apps",
-                "Offline-Sync",
-                "Prioritäts-Support",
-              ],
-            },
-            {
-              name: "Enterprise",
-              price: "199",
-              desc: "Für große Betriebe",
-              features: [
-                "Unbegrenzte Benutzer",
-                "Unbegrenzte Projekte",
-                "Alle Apps",
-                "Offline-Sync",
-                "API-Zugang",
-                "Dedizierter Support",
-              ],
-            },
-          ].map((plan) => (
-            <Card
-              key={plan.name}
-              className={
-                plan.name === "Professional" ? "border-primary shadow-lg" : ""
-              }
-            >
-              <CardHeader>
-                <CardTitle>{plan.name}</CardTitle>
-                <CardDescription>{plan.desc}</CardDescription>
-                <div className="mt-4">
-                  <span className="text-4xl font-bold">{plan.price}€</span>
-                  <span className="text-muted-foreground">/Monat</span>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2">
-                  {plan.features.map((f) => (
-                    <li key={f} className="text-sm text-muted-foreground">
-                      ✓ {f}
-                    </li>
-                  ))}
-                </ul>
-                <Link href="/auth/register" className="block mt-6">
-                  <Button
-                    variant={
-                      plan.name === "Professional" ? "default" : "outline"
-                    }
-                    className="w-full"
-                  >
-                    Auswählen
-                  </Button>
-                </Link>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="border-t mt-auto">
-        <div className="container mx-auto px-4 py-8">
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-            <p className="text-sm text-muted-foreground">
-              © {new Date().getFullYear()} ZunftGewerk. Alle Rechte
-              vorbehalten.
-            </p>
-            <div className="flex gap-4 text-sm text-muted-foreground">
-              <Link href="/impressum" className="hover:text-foreground">
-                Impressum
-              </Link>
-              <Link href="/datenschutz" className="hover:text-foreground">
-                Datenschutz
-              </Link>
-              <Link href="/agb" className="hover:text-foreground">
-                AGB
-              </Link>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
     </div>
-  );
+  )
 }

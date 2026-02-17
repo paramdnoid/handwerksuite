@@ -17,10 +17,11 @@ export const projectRouter = createTRPCRouter({
           "invoiced",
         ])
         .optional(),
+      priority: z.enum(["low", "normal", "high", "urgent"]).optional(),
       search: z.string().optional(),
     }),
   ).query(async ({ ctx, input }) => {
-    // TODO: query projects from DB with tenant isolation
+    // TODO: query projects from DB with company isolation
     return {
       projects: [],
       totalCount: 0,
@@ -32,7 +33,7 @@ export const projectRouter = createTRPCRouter({
   getById: withPermission("projects:read").input(
     z.object({ id: z.string().uuid() }),
   ).query(async ({ ctx, input }) => {
-    // TODO: fetch single project with tenant isolation
+    // TODO: fetch single project with company isolation
     return null;
   }),
 
@@ -41,13 +42,15 @@ export const projectRouter = createTRPCRouter({
       title: z.string().min(1).max(500),
       description: z.string().optional(),
       customerId: z.string().uuid().optional(),
+      assignedTo: z.string().uuid().optional(),
+      priority: z.enum(["low", "normal", "high", "urgent"]).optional(),
       estimatedHours: z.number().positive().optional(),
       estimatedCost: z.string().optional(),
       startDate: z.date().optional(),
       endDate: z.date().optional(),
     }),
   ).mutation(async ({ ctx, input }) => {
-    // TODO: create project with tenant isolation
+    // TODO: create project with company isolation
     return { success: true, id: "" };
   }),
 
@@ -67,11 +70,13 @@ export const projectRouter = createTRPCRouter({
           "invoiced",
         ])
         .optional(),
+      priority: z.enum(["low", "normal", "high", "urgent"]).optional(),
+      assignedTo: z.string().uuid().optional(),
       estimatedHours: z.number().positive().optional(),
       actualHours: z.number().positive().optional(),
     }),
   ).mutation(async ({ ctx, input }) => {
-    // TODO: update project with tenant isolation
+    // TODO: update project with company isolation
     return { success: true };
   }),
 

@@ -23,7 +23,11 @@
     "superjson": "^2.2.0",
     "zod": "^3.24.0"
   },
+  "peerDependencies": {
+    "better-auth": "^1.4.0"
+  },
   "devDependencies": {
+    "better-auth": "^1.4.0",
     "@zunftgewerk/auth": "workspace:*",
     "@zunftgewerk/crypto": "workspace:*",
     "@zunftgewerk/db": "workspace:*",

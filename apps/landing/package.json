@@ -4,32 +4,40 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "next dev --port 3000",
-    "build": "next build",
-    "start": "next start",
+    "dev": "dotenv -e ../../.env -- next dev --port 3000",
+    "build": "dotenv -e ../../.env -- next build",
+    "start": "dotenv -e ../../.env -- next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf .next .turbo"
   },
   "dependencies": {
-    "@zunftgewerk/api": "workspace:*",
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "^9.5.0",
     "@zunftgewerk/app-core": "workspace:*",
     "@zunftgewerk/auth": "workspace:*",
     "@zunftgewerk/types": "workspace:*",
     "@zunftgewerk/ui": "workspace:*",
-    "@trpc/server": "^11.0.0",
+    "better-auth": "^1.4.0",
+    "framer-motion": "^12.34.0",
+    "lucide-react": "^0.564.0",
     "next": "^15.3.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "sonner": "^1.7.0",
+    "tailwindcss-animate": "^1.0.7",
+    "three": "^0.182.0",
+    "zod": "^3.25.76"
   },
   "devDependencies": {
-    "@zunftgewerk/typescript-config": "workspace:*",
+    "@tailwindcss/postcss": "^4.0.0",
     "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
-    "tailwindcss": "^4.0.0",
-    "@tailwindcss/postcss": "^4.0.0",
+    "@types/three": "^0.182.0",
+    "@zunftgewerk/typescript-config": "workspace:*",
     "postcss": "^8.5.0",
+    "tailwindcss": "^4.0.0",
     "typescript": "^5.7.0"
   }
 }

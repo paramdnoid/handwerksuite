@@ -1,4 +1,6 @@
-import type { SubscriptionTier } from "./tenant";
+import type { SubscriptionTier } from "./company";
+
+// ── Subscription Plan ────────────────────────────────────
 
 export interface SubscriptionPlan {
   id: string;
@@ -12,11 +14,15 @@ export interface SubscriptionPlan {
   limits: SubscriptionLimits;
 }
 
+// ── Subscription Feature ─────────────────────────────────
+
 export interface SubscriptionFeature {
   key: string;
   label: string;
   included: boolean;
 }
+
+// ── Subscription Limits ──────────────────────────────────
 
 export interface SubscriptionLimits {
   maxUsers: number;
@@ -30,17 +36,23 @@ export interface SubscriptionLimits {
   prioritySupport: boolean;
 }
 
+// ── Subscription ─────────────────────────────────────────
+
 export interface Subscription {
   id: string;
-  tenantId: string;
+  companyId: string;
   planId: string;
   tier: SubscriptionTier;
   status: SubscriptionStatus;
+  lagoCustomerId: string | null;
+  lagoSubscriptionId: string | null;
   currentPeriodStart: Date;
   currentPeriodEnd: Date;
   cancelAtPeriodEnd: boolean;
   createdAt: Date;
 }
+
+// ── Subscription Status ──────────────────────────────────
 
 export type SubscriptionStatus =
   | "active"
@@ -49,9 +61,11 @@ export type SubscriptionStatus =
   | "canceled"
   | "paused";
 
+// ── Billing Invoice ──────────────────────────────────────
+
 export interface BillingInvoice {
   id: string;
-  tenantId: string;
+  companyId: string;
   subscriptionId: string;
   amount: number;
   currency: "EUR";
