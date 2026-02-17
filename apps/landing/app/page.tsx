@@ -19,12 +19,20 @@ const softwareJsonLd = {
   applicationCategory: 'BusinessApplication',
   operatingSystem: 'Web, iOS, Android, Windows, macOS, Linux',
   description: 'Die All-in-One Handwerkersoftware für Kaminfeger, Maler und SHK-Betriebe.',
+  url: 'https://zunftgewerk.de',
   offers: {
     '@type': 'AggregateOffer',
     priceCurrency: 'EUR',
     lowPrice: '49',
     highPrice: '99',
     offerCount: 3,
+  },
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: '4.9',
+    reviewCount: '500',
+    bestRating: '5',
+    worstRating: '1',
   },
 }
 
@@ -39,6 +47,19 @@ const faqJsonLd = {
       text: faq.answer,
     },
   })),
+}
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Startseite',
+      item: 'https://zunftgewerk.de',
+    },
+  ],
 }
 
 export default function LandingPage() {
@@ -68,6 +89,10 @@ export default function LandingPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
     </div>
   )

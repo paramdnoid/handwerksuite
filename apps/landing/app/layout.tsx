@@ -26,7 +26,25 @@ export const metadata: Metadata = {
     'SHK Software',
     'Handwerk digitalisieren',
     'Auftragsmanagement Handwerk',
+    'Handwerk Software Cloud',
+    'Rechnungssoftware Handwerk',
+    'Aufmaßberechnung Software',
+    'DSGVO Handwerkersoftware',
   ],
+  alternates: {
+    canonical: 'https://zunftgewerk.de',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
   openGraph: {
     title: 'ZunftGewerk — Die Handwerkersoftware, die mitdenkt',
     description:
@@ -34,6 +52,7 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'de_DE',
     siteName: 'ZunftGewerk',
+    url: 'https://zunftgewerk.de',
     images: [
       {
         url: '/opengraph-image.png',

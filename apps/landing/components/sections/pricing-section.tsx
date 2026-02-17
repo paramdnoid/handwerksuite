@@ -7,7 +7,8 @@ import {
   CardHeader,
   CardTitle,
 } from '@zunftgewerk/ui'
-import { Check } from 'lucide-react'
+import { Check, ArrowRight } from 'lucide-react'
+import Link from 'next/link'
 import { FadeIn, StaggerChildren, StaggerItem } from '@/components/fade-in'
 import { plans } from '@/content/pricing'
 
@@ -30,24 +31,27 @@ export function PricingSection() {
           </p>
         </FadeIn>
 
-        <StaggerChildren className="mx-auto grid max-w-5xl gap-8 lg:grid-cols-3" staggerDelay={0.1}>
+        <StaggerChildren
+          className="mx-auto grid max-w-5xl items-stretch gap-8 md:grid-cols-2 lg:grid-cols-3"
+          staggerDelay={0.1}
+        >
           {plans.map((plan) => (
             <StaggerItem key={plan.name}>
               <Card
                 className={`relative flex h-full flex-col transition-all duration-500 ${
                   plan.popular
-                    ? 'border-primary from-primary/8 via-primary/3 shadow-elevated scale-[1.02] border-2 bg-linear-to-b to-transparent lg:scale-105'
+                    ? 'border-primary from-primary/8 via-primary/3 shadow-elevated border-2 bg-linear-to-b to-transparent ring-1 ring-primary/10 lg:scale-[1.03]'
                     : 'border-border/50 shadow-card hover:shadow-card-hover'
                 }`}
               >
                 {plan.popular && (
                   <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
-                    <Badge className="from-primary bg-linear-to-r to-amber-500 px-4 py-1 text-xs font-semibold text-white">
+                    <Badge className="from-primary bg-linear-to-r to-amber-500 px-4 py-1 text-xs font-semibold text-white shadow-lg shadow-primary/20">
                       Beliebteste Option
                     </Badge>
                   </div>
                 )}
-                <CardHeader>
+                <CardHeader className={plan.popular ? 'pt-8' : ''}>
                   <CardTitle className="font-display text-xl">{plan.name}</CardTitle>
                   <CardDescription className="text-sm">{plan.description}</CardDescription>
                   <div className="mt-6 flex items-baseline gap-1">
@@ -69,21 +73,27 @@ export function PricingSection() {
                   <ul className="mb-8 flex-1 space-y-3">
                     {plan.features.map((feature) => (
                       <li key={feature} className="flex items-start gap-2.5">
-                        <Check className="text-primary mt-0.5 h-4 w-4 shrink-0" />
+                        <Check className={`mt-0.5 h-4 w-4 shrink-0 ${plan.popular ? 'text-primary' : 'text-muted-foreground'}`} />
                         <span className="text-sm">{feature}</span>
                       </li>
                     ))}
                   </ul>
                   <Button
-                    className={`w-full font-semibold ${
+                    className={`group w-full font-semibold ${
                       plan.popular
-                        ? 'from-primary bg-linear-to-r to-amber-500 text-white transition-all hover:brightness-110'
+                        ? 'from-primary bg-linear-to-r to-amber-500 text-white shadow-lg shadow-primary/20 transition-all hover:shadow-xl hover:shadow-primary/30 hover:brightness-110'
                         : ''
                     }`}
                     variant={plan.popular ? 'default' : 'outline'}
                     size="lg"
+                    asChild
                   >
-                    {plan.cta}
+                    <Link href={plan.price ? '/register' : 'mailto:enterprise@zunftgewerk.de'}>
+                      {plan.cta}
+                      {plan.popular && (
+                        <ArrowRight className="ml-1 h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+                      )}
+                    </Link>
                   </Button>
                 </CardContent>
               </Card>

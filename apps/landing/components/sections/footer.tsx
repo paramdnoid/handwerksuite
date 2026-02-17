@@ -4,11 +4,6 @@ import { Separator } from '@zunftgewerk/ui'
 import { Github, Linkedin, Twitter } from 'lucide-react'
 import { FadeIn } from '@/components/fade-in'
 
-/* ------------------------------------------------------------------ */
-/*  Footer link data — replace placeholder hrefs with real routes      */
-/*  when the corresponding pages are created                           */
-/* ------------------------------------------------------------------ */
-
 const socialLinks = [
   { href: 'https://github.com/zunftgewerk', label: 'GitHub', icon: Github },
   { href: 'https://linkedin.com/company/zunftgewerk', label: 'LinkedIn', icon: Linkedin },
@@ -24,6 +19,8 @@ const productLinks = [
 
 const supportLinks = [
   { href: 'mailto:support@zunftgewerk.de', label: 'Kontakt' },
+  { href: '/docs', label: 'Dokumentation' },
+  { href: '/changelog', label: 'Changelog' },
 ] as const
 
 const legalLinks = [
@@ -31,22 +28,20 @@ const legalLinks = [
   { href: '/privacy', label: 'Datenschutz' },
 ] as const
 
-/* ------------------------------------------------------------------ */
-/*  Footer                                                             */
-/* ------------------------------------------------------------------ */
-
 export function Footer() {
+  const currentYear = new Date().getFullYear()
+
   return (
     <footer className="border-border/40 bg-muted/30 border-t" aria-label="Fußbereich">
       <div className="container mx-auto px-4 py-12 md:py-16">
         <FadeIn>
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
             {/* Brand */}
             <div className="sm:col-span-2 lg:col-span-1">
-              <Link href="/" className="mb-4 flex items-center gap-3">
+              <Link href="/" className="mb-4 inline-flex items-center gap-3" aria-label="ZunftGewerk — Zur Startseite">
                 <Image
                   src="/logo.png"
-                  alt="ZunftGewerk Logo"
+                  alt=""
                   width={36}
                   height={36}
                   className="h-9 w-9"
@@ -61,7 +56,7 @@ export function Footer() {
                   </span>
                 </div>
               </Link>
-              <p className="text-muted-foreground mt-3 text-sm leading-relaxed">
+              <p className="text-muted-foreground mt-3 max-w-xs text-sm leading-relaxed">
                 Die All-in-One Software für Kaminfeger, Maler und SHK-Betriebe. DSGVO-konform und
                 made in Germany.
               </p>
@@ -73,8 +68,8 @@ export function Footer() {
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="bg-muted/60 text-muted-foreground hover:bg-primary/10 hover:text-primary flex h-9 w-9 items-center justify-center rounded-lg transition-all"
-                    aria-label={social.label}
+                    className="bg-muted/60 text-muted-foreground hover:bg-primary/10 hover:text-primary flex h-9 w-9 items-center justify-center rounded-lg transition-all duration-200"
+                    aria-label={`${social.label} (öffnet in neuem Tab)`}
                   >
                     <social.icon className="h-4 w-4" />
                   </a>
@@ -137,7 +132,7 @@ export function Footer() {
           <Separator className="my-8 opacity-50" />
 
           <div className="text-muted-foreground flex flex-col items-center justify-between gap-4 text-center text-sm sm:flex-row sm:text-left">
-            <p>&copy; {new Date().getFullYear()} ZunftGewerk GmbH. Alle Rechte vorbehalten.</p>
+            <p>&copy; {currentYear} ZunftGewerk GmbH. Alle Rechte vorbehalten.</p>
             <p className="flex items-center gap-1.5">
               Made with Sorgfalt in Deutschland
               <span aria-label="Deutsche Flagge" role="img" className="text-xs">

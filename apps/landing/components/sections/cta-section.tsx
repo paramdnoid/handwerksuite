@@ -1,5 +1,6 @@
 import { Button } from '@zunftgewerk/ui'
 import { ArrowRight } from 'lucide-react'
+import Link from 'next/link'
 import { FadeIn } from '@/components/fade-in'
 
 export function CtaSection() {
@@ -25,23 +26,29 @@ export function CtaSection() {
             </span>
             ?
           </h2>
-          <p className="text-muted-foreground mx-auto mb-10 max-w-xl text-lg">
+          <p className="text-muted-foreground mx-auto mb-10 max-w-xl text-lg text-balance">
             Starten Sie noch heute mit ZunftGewerk — 30 Tage kostenlos, ohne Risiko.
           </p>
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Button
               size="lg"
-              className="from-primary h-13 w-full gap-2 bg-linear-to-r to-amber-500 px-8 text-base font-semibold text-white transition-all hover:brightness-110 sm:w-auto"
+              className="from-primary group h-13 w-full gap-2 bg-linear-to-r to-amber-500 px-8 text-base font-semibold text-white shadow-lg shadow-primary/20 transition-all hover:shadow-xl hover:shadow-primary/30 hover:brightness-110 sm:w-auto"
+              asChild
             >
-              Kostenlos testen
-              <ArrowRight className="h-4 w-4" />
+              <Link href="/register">
+                Kostenlos testen
+                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+              </Link>
             </Button>
             <Button
               size="lg"
               variant="outline"
               className="h-13 w-full px-8 text-base font-medium sm:w-auto"
+              asChild
             >
-              Beratungsgespräch buchen
+              <Link href="mailto:sales@zunftgewerk.de">
+                Beratungsgespräch buchen
+              </Link>
             </Button>
           </div>
         </FadeIn>

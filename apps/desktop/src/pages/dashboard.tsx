@@ -16,11 +16,11 @@ export default function DashboardPage() {
   return (
     <>
       <div>
-        <h1 className="font-display text-2xl font-bold tracking-tight">
+        <h1 className="text-base font-semibold tracking-tight">
           Dashboard
         </h1>
-        <p className="text-muted-foreground mt-1">
-          Willkommen bei ZunftGewerk. Hier ist Ihre Betriebsübersicht.
+        <p className="text-xs text-muted-foreground">
+          Übersicht über Ihre Kaminfeger-Aktivitäten
         </p>
       </div>
 

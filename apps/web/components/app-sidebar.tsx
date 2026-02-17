@@ -12,9 +12,8 @@ import {
 } from "@zunftgewerk/ui";
 import { NavMain } from "./nav-main";
 import { NavUser } from "./nav-user";
-import { mockUser, mockCompany } from "@/lib/mock-data";
 
-export function AccountSidebar({
+export function AppSidebar({
   ...props
 }: React.ComponentProps<typeof Sidebar>) {
   return (
@@ -24,7 +23,7 @@ export function AccountSidebar({
           <SidebarMenuItem>
             <SidebarMenuButton
               size="lg"
-              className="data-[slot=sidebar-menu-button]:!p-1.5"
+              className="data-[slot=sidebar-menu-button]:p-1.5!"
             >
               <img
                 src="/logo.png"
@@ -32,17 +31,9 @@ export function AccountSidebar({
                 className="size-8 rounded-lg"
               />
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">
-                  {mockCompany.name}
-                </span>
+                <span className="truncate font-semibold">ZunftGewerk</span>
                 <span className="truncate text-xs text-muted-foreground">
-                  {mockCompany.subscriptionTier === "professional"
-                    ? "Professional"
-                    : mockCompany.subscriptionTier === "starter"
-                      ? "Starter"
-                      : mockCompany.subscriptionTier === "enterprise"
-                        ? "Enterprise"
-                        : "Free"}
+                  Betriebsplattform
                 </span>
               </div>
             </SidebarMenuButton>
@@ -53,7 +44,7 @@ export function AccountSidebar({
         <NavMain />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={mockUser} />
+        <NavUser />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

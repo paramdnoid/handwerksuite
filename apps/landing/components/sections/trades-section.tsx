@@ -49,7 +49,7 @@ export function TradesSection() {
                   <ul className="space-y-3">
                     {trade.features.map((feature) => (
                       <li key={feature} className="flex items-start gap-2.5">
-                        <Check className="text-primary mt-0.5 h-4 w-4 shrink-0" />
+                        <Check className={`${trade.checkColor} mt-0.5 h-4 w-4 shrink-0`} />
                         <span className="text-sm">{feature}</span>
                       </li>
                     ))}

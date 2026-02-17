@@ -1,27 +1,204 @@
 @import "tailwindcss";
+@source "../../../packages/ui/src";
 
 @theme {
+  /* Color system — orange brand */
   --color-background: oklch(1 0 0);
-  --color-foreground: oklch(0.145 0 0);
-  --color-primary: oklch(0.45 0.18 250);
-  --color-primary-foreground: oklch(0.985 0 0);
-  --color-muted: oklch(0.97 0 0);
-  --color-muted-foreground: oklch(0.556 0 0);
-  --color-border: oklch(0.922 0 0);
+  --color-foreground: oklch(0.145 0.02 260);
+
+  --color-card: oklch(1 0 0);
+  --color-card-foreground: oklch(0.145 0.02 260);
+
+  --color-popover: oklch(1 0 0);
+  --color-popover-foreground: oklch(0.145 0.02 260);
+
+  --color-primary: oklch(0.705 0.187 47.6);
+  --color-primary-foreground: oklch(1 0 0);
+
+  --color-secondary: oklch(0.97 0.002 260);
+  --color-secondary-foreground: oklch(0.205 0.02 260);
+
+  --color-muted: oklch(0.97 0.002 260);
+  --color-muted-foreground: oklch(0.556 0.01 260);
+
+  --color-accent: oklch(0.97 0.002 260);
+  --color-accent-foreground: oklch(0.205 0.02 260);
+
+  --color-destructive: oklch(0.577 0.245 27.325);
+
+  --color-border: oklch(0.905 0.005 260);
+  --color-input: oklch(0.905 0.005 260);
+  --color-ring: oklch(0.705 0.187 47.6);
+
+  /* Sidebar */
+  --color-sidebar-background: oklch(0.985 0 0);
+  --color-sidebar-foreground: oklch(0.145 0.02 260);
+  --color-sidebar-primary: oklch(0.705 0.187 47.6);
+  --color-sidebar-primary-foreground: oklch(1 0 0);
+  --color-sidebar-accent: oklch(0.97 0.002 260);
+  --color-sidebar-accent-foreground: oklch(0.205 0.02 260);
+  --color-sidebar-border: oklch(0.905 0.005 260);
+  --color-sidebar-ring: oklch(0.705 0.187 47.6);
+
+  /* Radius */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+
+  /* Typography */
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* Animations */
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
 }
+
+/* ------------------------------------------------------------------ */
+/*  Base layer                                                         */
+/* ------------------------------------------------------------------ */
+
+@layer base {
+  :root {
+    /* Enterprise Shadow System */
+    --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.06), 0 6px 16px rgba(0, 0, 0, 0.05);
+    --shadow-card-hover: 0 4px 20px rgba(0, 0, 0, 0.1), 0 12px 44px rgba(0, 0, 0, 0.06);
+    --shadow-elevated: 0 8px 30px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.06);
+    --shadow-glow: 0 0 40px rgba(249, 115, 22, 0.15);
+
+    /* Focus Glow System */
+    --focus-glow:
+      0 0 0 2px var(--color-background),
+      0 0 0 4px color-mix(in oklch, var(--color-ring) 50%, transparent),
+      0 0 12px color-mix(in oklch, var(--color-ring) 20%, transparent);
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  *:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-glow);
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    overflow: hidden;
+    user-select: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Desktop: sidebar & wrapper background                              */
+/* ------------------------------------------------------------------ */
+
+[data-slot="sidebar"],
+[data-slot="sidebar-inner"] {
+  background: linear-gradient(180deg, oklch(0.97 0.005 250), oklch(0.98 0.003 250)) !important;
+}
+
+.group\/sidebar-wrapper {
+  background: linear-gradient(180deg, oklch(0.97 0.005 250), oklch(0.98 0.003 250)) !important;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Desktop: remove sidebar rail hover border                          */
+/* ------------------------------------------------------------------ */
+
+[data-slot="sidebar-rail"]:hover::after {
+  background-color: transparent !important;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Desktop: uniform inset border                                      */
+/* ------------------------------------------------------------------ */
+
+main[data-slot="sidebar-inset"] {
+  box-shadow: 0 0 0 1px color-mix(in oklch, var(--color-border) 50%, transparent) !important;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Desktop: window drag region                                        */
+/* ------------------------------------------------------------------ */
 
 .drag-region {
   -webkit-app-region: drag;
 }
 
 .drag-region button,
-.drag-region a {
+.drag-region a,
+.drag-region [data-slot] {
   -webkit-app-region: no-drag;
 }
 
-body {
-  @apply bg-background text-foreground antialiased;
-  overflow: hidden;
-  user-select: none;
+/* ------------------------------------------------------------------ */
+/*  Display font utility                                               */
+/* ------------------------------------------------------------------ */
+
+.font-display {
+  font-family: "Plus Jakarta Sans", var(--font-sans), system-ui, sans-serif;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Enterprise card shadow utilities                                   */
+/* ------------------------------------------------------------------ */
+
+.shadow-card {
+  box-shadow: var(--shadow-card);
+}
+
+.shadow-card-hover {
+  box-shadow: var(--shadow-card-hover);
+}
+
+.shadow-elevated {
+  box-shadow: var(--shadow-elevated);
+}
+
+.shadow-glow {
+  box-shadow: var(--shadow-glow);
+}
+
+/* ------------------------------------------------------------------ */
+/*  Selection highlight                                                */
+/* ------------------------------------------------------------------ */
+
+::selection {
+  background-color: color-mix(in oklch, var(--color-primary) 12%, transparent);
+  color: var(--color-foreground);
+}
+
+/* ------------------------------------------------------------------ */
+/*  Reduced motion (WCAG 2.3.3)                                        */
+/* ------------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

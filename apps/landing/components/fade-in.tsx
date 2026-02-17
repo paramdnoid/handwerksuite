@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, memo } from 'react'
 import {
   motion,
   useInView,
@@ -34,7 +34,7 @@ interface FadeInProps {
   amount?: number
 }
 
-export function FadeIn({
+export const FadeIn = memo(function FadeIn({
   children,
   className,
   direction = 'up',
@@ -59,11 +59,12 @@ export function FadeIn({
       variants={directionVariants[direction]}
       transition={{ duration, delay, ease: [0.25, 0.46, 0.45, 0.94] }}
       className={className}
+      style={{ willChange: isInView ? 'auto' : 'opacity, transform' }}
     >
       {children}
     </motion.div>
   )
-}
+})
 
 /* ------------------------------------------------------------------ */
 /*  StaggerChildren — staggered entrance for grids / lists             */
@@ -78,7 +79,7 @@ interface StaggerChildrenProps {
   amount?: number
 }
 
-export function StaggerChildren({
+export const StaggerChildren = memo(function StaggerChildren({
   children,
   className,
   staggerDelay = 0.08,
@@ -110,9 +111,9 @@ export function StaggerChildren({
       {children}
     </motion.div>
   )
-}
+})
 
-export function StaggerItem({
+export const StaggerItem = memo(function StaggerItem({
   children,
   className,
 }: {
@@ -137,7 +138,7 @@ export function StaggerItem({
       {children}
     </motion.div>
   )
-}
+})
 
 /* ------------------------------------------------------------------ */
 /*  AnimatedCounter — spring-based number animation                    */
@@ -151,7 +152,7 @@ interface AnimatedCounterProps {
   className?: string
 }
 
-export function AnimatedCounter({
+export const AnimatedCounter = memo(function AnimatedCounter({
   target,
   suffix = '',
   prefix = '',
@@ -185,4 +186,4 @@ export function AnimatedCounter({
       {suffix}
     </span>
   )
-}
+})

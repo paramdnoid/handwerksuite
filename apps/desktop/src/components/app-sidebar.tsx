@@ -1,5 +1,3 @@
-"use client";
-
 import {
   Sidebar,
   SidebarContent,
@@ -12,37 +10,31 @@ import {
 } from "@zunftgewerk/ui";
 import { NavMain } from "./nav-main";
 import { NavUser } from "./nav-user";
-import { mockUser, mockCompany } from "@/lib/mock-data";
 
-export function AccountSidebar({
+export function AppSidebar({
   ...props
 }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar collapsible="offcanvas" variant="inset" {...props}>
+    <Sidebar collapsible="offcanvas" variant="inset" className="pt-[23px]" {...props}>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton
               size="lg"
-              className="data-[slot=sidebar-menu-button]:!p-1.5"
+              className="items-center"
             >
               <img
                 src="/logo.png"
                 alt="ZunftGewerk"
-                className="size-8 rounded-lg"
+                className="size-9 rounded-lg -ml-2"
               />
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-semibold">
-                  {mockCompany.name}
+                  <span className="text-foreground">Zunft</span>
+                  <span className="text-muted-foreground">Gewerk</span>
                 </span>
                 <span className="truncate text-xs text-muted-foreground">
-                  {mockCompany.subscriptionTier === "professional"
-                    ? "Professional"
-                    : mockCompany.subscriptionTier === "starter"
-                      ? "Starter"
-                      : mockCompany.subscriptionTier === "enterprise"
-                        ? "Enterprise"
-                        : "Free"}
+                  Betriebsplattform
                 </span>
               </div>
             </SidebarMenuButton>
@@ -53,7 +45,7 @@ export function AccountSidebar({
         <NavMain />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={mockUser} />
+        <NavUser />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

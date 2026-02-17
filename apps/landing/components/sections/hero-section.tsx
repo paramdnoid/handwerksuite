@@ -30,9 +30,8 @@ export function HeroSection() {
       </div>
 
       <div className="container mx-auto flex min-h-screen flex-col items-center justify-center px-4 pt-24 pb-20">
-        {/* Overlapping grid: text col-1, image col-1+2, text on top via z-index */}
-        <div className="grid w-full items-center lg:grid-cols-[1fr_1.2fr]">
-          {/* Text content — sits on top */}
+        <div className="grid w-full items-center gap-8 lg:grid-cols-[1fr_1.2fr] lg:gap-0">
+          {/* Text content */}
           <div className="relative z-10 text-center lg:text-left">
             <FadeIn delay={0.1} duration={0.5}>
               <Badge
@@ -47,7 +46,7 @@ export function HeroSection() {
             <FadeIn delay={0.2} duration={0.7}>
               <h1
                 id="hero-heading"
-                className="hero-text-gloss font-display mb-6 text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl 2xl:text-7xl"
+                className="hero-text-gloss font-display mb-6 text-4xl font-extrabold tracking-tight text-balance sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl 2xl:text-7xl"
               >
                 Die Handwerkersoftware,{' '}
                 <span className="hero-text-gloss-accent animate-gradient-x from-primary bg-linear-to-r via-primary/80 to-amber-500 bg-clip-text text-transparent">
@@ -67,18 +66,18 @@ export function HeroSection() {
               <div className="flex flex-col items-center justify-center gap-4 sm:flex-row lg:justify-start">
                 <Button
                   size="lg"
-                  className="from-primary h-13 w-full gap-2 bg-linear-to-r to-amber-500 px-8 text-base font-semibold text-white transition-all hover:brightness-110 sm:w-auto"
+                  className="from-primary group h-13 w-full gap-2 bg-linear-to-r to-amber-500 px-8 text-base font-semibold text-white shadow-lg shadow-primary/20 transition-all hover:shadow-xl hover:shadow-primary/30 hover:brightness-110 sm:w-auto"
                   asChild
                 >
                   <Link href="/register">
                     30 Tage kostenlos testen
-                    <ArrowRight className="h-4 w-4" />
+                    <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
                   </Link>
                 </Button>
                 <Button
                   size="lg"
                   variant="outline"
-                  className="h-13 w-full gap-2 px-8 text-base font-medium backdrop-blur-sm sm:w-auto"
+                  className="h-13 w-full gap-2 px-8 text-base font-medium backdrop-blur-sm transition-all sm:w-auto"
                   asChild
                 >
                   <Link href="#features">
@@ -96,12 +95,12 @@ export function HeroSection() {
                   <ShieldCheck className="text-primary h-4 w-4" />
                   DSGVO-konform
                 </span>
-                <span className="text-border">|</span>
+                <span className="text-border" aria-hidden="true">|</span>
                 <span className="flex items-center gap-2">
                   <Zap className="text-primary h-4 w-4" />
                   Keine Kreditkarte nötig
                 </span>
-                <span className="text-border">|</span>
+                <span className="text-border" aria-hidden="true">|</span>
                 <span className="flex items-center gap-2">
                   <HeartHandshake className="text-primary h-4 w-4" />
                   Persönlicher Support
@@ -110,21 +109,22 @@ export function HeroSection() {
             </FadeIn>
           </div>
 
-          {/* Product mockup with 3D perspective — overlaps into text column */}
-          <FadeIn delay={0.5} duration={0.7}>
-            <div className="relative mx-auto mt-12 w-full max-w-xl perspective-[600px] lg:mt-0 lg:-ml-24 lg:max-w-none lg:origin-center lg:scale-110">
+          {/* Product mockup with 3D perspective */}
+          <FadeIn delay={0.5} duration={0.7} direction="left">
+            <div className="relative mx-auto mt-8 w-full max-w-xl perspective-[600px] lg:mt-0 lg:-ml-24 lg:max-w-none lg:origin-center lg:scale-110">
               <div className="group relative transform-[rotateY(-14deg)_rotateX(5deg)] transition-transform duration-700 ease-out hover:transform-[rotateY(-4deg)_rotateX(2deg)]">
                 <div className="border-border/50 from-muted/50 to-muted/20 shadow-elevated overflow-hidden rounded-xl border bg-linear-to-b p-1 transform-3d">
                   <Image
                     src="/desktop-light.jpeg"
-                    alt="Zunftgewerk Dashboard-Vorschau"
+                    alt="Zunftgewerk Dashboard-Vorschau mit Auftragsübersicht, Kalender und Kundenverwaltung"
                     width={1920}
                     height={1080}
                     priority
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 60vw, 700px"
                     className="rounded-lg"
                   />
                 </div>
-                {/* 3D edge highlight — left side catches the light */}
+                {/* 3D edge highlight */}
                 <div
                   aria-hidden="true"
                   className="pointer-events-none absolute inset-y-0 -left-px w-px bg-linear-to-b from-transparent via-white/25 to-transparent"
@@ -145,7 +145,7 @@ export function HeroSection() {
         </div>
       </div>
 
-      {/* Bottom fade — soft transition into next section */}
+      {/* Bottom fade */}
       <div
         aria-hidden="true"
         className="from-background via-background/80 pointer-events-none absolute inset-x-0 -bottom-32 z-10 h-96 bg-linear-to-t from-10% via-40% to-transparent"
@@ -153,7 +153,9 @@ export function HeroSection() {
 
       {/* Scroll indicator */}
       <div className="absolute bottom-8 left-1/2 z-10 hidden -translate-x-1/2 animate-bounce md:block" aria-hidden="true">
-        <ChevronDown className="text-muted-foreground/50 h-5 w-5" />
+        <a href="#trades" className="text-muted-foreground/50 hover:text-muted-foreground transition-colors" aria-label="Nach unten scrollen">
+          <ChevronDown className="h-5 w-5" />
+        </a>
       </div>
     </section>
   )

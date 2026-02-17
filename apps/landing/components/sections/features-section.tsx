@@ -21,16 +21,16 @@ export function FeaturesSection() {
           >
             Alles, was Ihr Betrieb braucht
           </h2>
-          <p className="text-muted-foreground text-lg">
+          <p className="text-muted-foreground text-lg text-balance">
             Eine Software für alle Prozesse — von der Auftragsannahme über die mobile Dokumentation
             bis zur Rechnungsstellung.
           </p>
         </FadeIn>
 
-        <StaggerChildren className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3" staggerDelay={0.06}>
+        <StaggerChildren className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:gap-6" staggerDelay={0.06}>
           {features.map((feature) => (
             <StaggerItem key={feature.title}>
-              <Card className="group border-border/50 bg-background shadow-card hover:shadow-card-hover h-full transition-all duration-500">
+              <Card className="group border-border/50 bg-background shadow-card hover:shadow-card-hover h-full transition-all duration-500 hover:-translate-y-0.5">
                 <CardHeader>
                   <div className="bg-primary/10 ring-primary/20 group-hover:bg-primary/15 group-hover:ring-primary/30 group-hover:shadow-primary/10 mb-3 flex h-12 w-12 items-center justify-center rounded-xl shadow-sm ring-1 transition-all duration-300 group-hover:shadow-md">
                     <feature.icon className="text-primary h-5 w-5" />

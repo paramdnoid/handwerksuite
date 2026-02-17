@@ -11,11 +11,13 @@ export function StatsSection() {
       />
       <div className="bg-dot-pattern absolute inset-0 opacity-30" aria-hidden="true" />
       <div className="relative z-20 container mx-auto px-4 py-16 md:py-20">
-        <StaggerChildren className="grid grid-cols-2 gap-8 md:grid-cols-4 md:gap-12">
+        <StaggerChildren className="grid grid-cols-2 gap-8 md:grid-cols-4 md:gap-12" staggerDelay={0.08}>
           {stats.map((stat) => (
             <StaggerItem key={stat.label}>
               <div className="group text-center">
-                <stat.icon className="text-primary mx-auto mb-3 h-5 w-5 transition-transform duration-300 group-hover:scale-110" />
+                <div className="bg-primary/8 ring-primary/10 mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl ring-1 ring-inset transition-all duration-300 group-hover:bg-primary/12 group-hover:ring-primary/20">
+                  <stat.icon className="text-primary h-5 w-5 transition-transform duration-300 group-hover:scale-110" />
+                </div>
                 <div className="font-display text-3xl font-extrabold tracking-tight md:text-4xl lg:text-5xl">
                   <AnimatedCounter target={stat.value} suffix={stat.suffix} />
                 </div>

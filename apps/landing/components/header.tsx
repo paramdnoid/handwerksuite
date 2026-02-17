@@ -12,7 +12,7 @@ const navLinks = [
   { href: '#trades', label: 'Gewerke' },
   { href: '#features', label: 'Features' },
   { href: '#pricing', label: 'Preise' },
-]
+] as const
 
 export function Header() {
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -35,7 +35,6 @@ export function Header() {
   }, [])
 
   useEffect(() => {
-    // Check initial scroll position (e.g. after page refresh mid-page)
     handleScroll()
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => {
@@ -43,6 +42,18 @@ export function Header() {
       cancelAnimationFrame(rafId.current)
     }
   }, [handleScroll])
+
+  // Body scroll lock when mobile menu is open
+  useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [mobileOpen])
 
   // Close mobile menu on escape
   useEffect(() => {
@@ -54,21 +65,25 @@ export function Header() {
     return () => document.removeEventListener('keydown', handleKeyDown)
   }, [mobileOpen])
 
+  // Close on route change (anchor click)
+  const closeMobile = useCallback(() => setMobileOpen(false), [])
+
   return (
     <header
       className={[
         'fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,box-shadow] duration-300 ease-out',
-        scrolled
+        scrolled || mobileOpen
           ? 'border-border/20 bg-background/60 border-b shadow-[0_1px_3px_rgba(0,0,0,0.04)] backdrop-blur-xl backdrop-saturate-150'
           : 'border-b border-transparent bg-transparent',
       ].join(' ')}
+      role="banner"
     >
       <div className="container mx-auto flex items-center justify-between px-4 py-3">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-3">
+        <Link href="/" className="flex items-center gap-3" aria-label="ZunftGewerk — Zur Startseite">
           <Image
             src="/logo.png"
-            alt="ZunftGewerk Logo"
+            alt=""
             width={40}
             height={40}
             className="h-10 w-10"
@@ -96,7 +111,10 @@ export function Header() {
             </a>
           ))}
           <FaqDialog>
-            <button className="text-muted-foreground hover:text-foreground after:bg-primary relative text-sm font-medium transition-colors after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:w-0 after:rounded-full after:transition-all after:duration-300 hover:after:w-full">
+            <button
+              type="button"
+              className="text-muted-foreground hover:text-foreground after:bg-primary relative text-sm font-medium transition-colors after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:w-0 after:rounded-full after:transition-all after:duration-300 hover:after:w-full"
+            >
               FAQ
             </button>
           </FaqDialog>
@@ -119,25 +137,32 @@ export function Header() {
           </Button>
         </div>
 
+        {/* Mobile menu toggle */}
         <button
+          type="button"
           className="text-muted-foreground hover:bg-accent hover:text-foreground inline-flex h-9 w-9 items-center justify-center rounded-md transition-colors md:hidden"
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-expanded={mobileOpen}
           aria-controls="mobile-navigation"
           aria-label={mobileOpen ? 'Menü schließen' : 'Menü öffnen'}
         >
-          {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          <span className="relative h-5 w-5">
+            <Menu className={`absolute inset-0 h-5 w-5 transition-all duration-200 ${mobileOpen ? 'rotate-90 scale-0 opacity-0' : 'rotate-0 scale-100 opacity-100'}`} />
+            <X className={`absolute inset-0 h-5 w-5 transition-all duration-200 ${mobileOpen ? 'rotate-0 scale-100 opacity-100' : '-rotate-90 scale-0 opacity-0'}`} />
+          </span>
         </button>
       </div>
 
-      {/* Mobile Navigation — always in DOM for screenreader discoverability */}
+      {/* Mobile Navigation */}
       <nav
         id="mobile-navigation"
-        className={`border-border/20 bg-background/95 border-t backdrop-blur-xl transition-[max-height,opacity] duration-300 ease-out md:hidden ${
+        className={[
+          'border-border/20 bg-background/98 border-t backdrop-blur-xl md:hidden',
+          'transition-all duration-300 ease-out',
           mobileOpen
             ? 'max-h-[80vh] opacity-100'
-            : 'pointer-events-none max-h-0 overflow-hidden opacity-0'
-        }`}
+            : 'pointer-events-none max-h-0 overflow-hidden opacity-0',
+        ].join(' ')}
         aria-label="Mobile Navigation"
         aria-hidden={!mobileOpen}
       >
@@ -146,18 +171,19 @@ export function Header() {
             <a
               key={link.href}
               href={link.href}
-              onClick={() => setMobileOpen(false)}
+              onClick={closeMobile}
               tabIndex={mobileOpen ? 0 : -1}
-              className="hover:bg-accent rounded-md px-3 py-2.5 text-sm font-medium transition-colors"
+              className="hover:bg-accent active:bg-accent/80 rounded-md px-3 py-2.5 text-sm font-medium transition-colors"
             >
               {link.label}
             </a>
           ))}
           <FaqDialog>
             <button
-              onClick={() => setMobileOpen(false)}
+              type="button"
+              onClick={closeMobile}
               tabIndex={mobileOpen ? 0 : -1}
-              className="hover:bg-accent rounded-md px-3 py-2.5 text-left text-sm font-medium transition-colors"
+              className="hover:bg-accent active:bg-accent/80 rounded-md px-3 py-2.5 text-left text-sm font-medium transition-colors"
             >
               FAQ
             </button>
