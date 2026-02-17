@@ -1,5 +1,5 @@
 {
-  "name": "@handwerksuite/web",
+  "name": "@zunftgewerk/web",
   "version": "0.0.1",
   "private": true,
   "type": "module",
@@ -12,19 +12,19 @@
     "clean": "rm -rf .next .turbo"
   },
   "dependencies": {
-    "@handwerksuite/api": "workspace:*",
-    "@handwerksuite/app-core": "workspace:*",
-    "@handwerksuite/auth": "workspace:*",
-    "@handwerksuite/sync": "workspace:*",
-    "@handwerksuite/types": "workspace:*",
-    "@handwerksuite/ui": "workspace:*",
+    "@zunftgewerk/api": "workspace:*",
+    "@zunftgewerk/app-core": "workspace:*",
+    "@zunftgewerk/auth": "workspace:*",
+    "@zunftgewerk/sync": "workspace:*",
+    "@zunftgewerk/types": "workspace:*",
+    "@zunftgewerk/ui": "workspace:*",
     "@trpc/server": "^11.0.0",
     "next": "^15.3.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "@handwerksuite/typescript-config": "workspace:*",
+    "@zunftgewerk/typescript-config": "workspace:*",
     "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",

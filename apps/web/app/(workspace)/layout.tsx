@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Separator } from "@handwerksuite/ui";
+import { Separator } from "@zunftgewerk/ui";
 
 const navItems = [
   { href: "/dashboard", label: "Dashboard" },
@@ -20,7 +20,7 @@ export default function WorkspaceLayout({
       <aside className="w-64 border-r bg-sidebar-background flex flex-col">
         <div className="flex h-16 items-center px-6">
           <span className="text-lg font-bold text-sidebar-primary">
-            HandwerkSuite
+            ZunftGewerk
           </span>
         </div>
         <Separator />

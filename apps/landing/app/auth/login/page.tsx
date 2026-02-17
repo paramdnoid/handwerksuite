@@ -14,8 +14,8 @@ import {
   Input,
   Label,
   Separator,
-} from "@handwerksuite/ui";
-import { useAuth } from "@handwerksuite/app-core";
+} from "@zunftgewerk/ui";
+import { useAuth } from "@zunftgewerk/app-core";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -41,7 +41,7 @@ export default function LoginPage() {
         <CardHeader className="text-center">
           <CardTitle className="text-2xl">Anmelden</CardTitle>
           <CardDescription>
-            Melden Sie sich bei Ihrem HandwerkSuite-Konto an
+            Melden Sie sich bei Ihrem ZunftGewerk-Konto an
           </CardDescription>
         </CardHeader>
         <CardContent>

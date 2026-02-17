@@ -1,5 +1,5 @@
 {
-  "name": "@handwerksuite/app-core",
+  "name": "@zunftgewerk/app-core",
   "version": "0.0.1",
   "private": true,
   "type": "module",
@@ -32,12 +32,12 @@
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "@handwerksuite/api": "workspace:*",
-    "@handwerksuite/auth": "workspace:*",
-    "@handwerksuite/sync": "workspace:*",
-    "@handwerksuite/types": "workspace:*",
-    "@handwerksuite/ui": "workspace:*",
-    "@handwerksuite/typescript-config": "workspace:*",
+    "@zunftgewerk/api": "workspace:*",
+    "@zunftgewerk/auth": "workspace:*",
+    "@zunftgewerk/sync": "workspace:*",
+    "@zunftgewerk/types": "workspace:*",
+    "@zunftgewerk/ui": "workspace:*",
+    "@zunftgewerk/typescript-config": "workspace:*",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "typescript": "^5.7.0"

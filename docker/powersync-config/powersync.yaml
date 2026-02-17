@@ -4,7 +4,7 @@
 replication:
   connections:
     - type: postgresql
-      uri: postgresql://handwerksuite:handwerksuite_dev_password@postgres:5432/handwerksuite
+      uri: postgresql://zunftgewerk:zunftgewerk_dev_password@postgres:5432/zunftgewerk
       # Slot name for logical replication
       slot_name: powersync_slot
       # Publication for change tracking

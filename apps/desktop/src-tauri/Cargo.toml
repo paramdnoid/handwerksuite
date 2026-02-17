@@ -1,8 +1,8 @@
 [package]
-name = "handwerksuite-desktop"
+name = "zunftgewerk-desktop"
 version = "0.0.1"
 edition = "2021"
-description = "HandwerkSuite Desktop Application"
+description = "ZunftGewerk Desktop Application"
 
 [build-dependencies]
 tauri-build = { version = "2", features = [] }

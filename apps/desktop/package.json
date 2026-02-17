@@ -1,5 +1,5 @@
 {
-  "name": "@handwerksuite/desktop",
+  "name": "@zunftgewerk/desktop",
   "version": "0.0.1",
   "private": true,
   "type": "module",
@@ -10,11 +10,11 @@
     "clean": "rm -rf src-tauri/target .turbo"
   },
   "dependencies": {
-    "@handwerksuite/app-core": "workspace:*",
-    "@handwerksuite/auth": "workspace:*",
-    "@handwerksuite/sync": "workspace:*",
-    "@handwerksuite/types": "workspace:*",
-    "@handwerksuite/ui": "workspace:*",
+    "@zunftgewerk/app-core": "workspace:*",
+    "@zunftgewerk/auth": "workspace:*",
+    "@zunftgewerk/sync": "workspace:*",
+    "@zunftgewerk/types": "workspace:*",
+    "@zunftgewerk/ui": "workspace:*",
     "@tauri-apps/api": "^2.10.0",
     "@tauri-apps/plugin-sql": "^2.0.0",
     "@tauri-apps/plugin-shell": "^2.0.0",
@@ -22,7 +22,7 @@
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "@handwerksuite/typescript-config": "workspace:*",
+    "@zunftgewerk/typescript-config": "workspace:*",
     "@tauri-apps/cli": "^2.10.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",

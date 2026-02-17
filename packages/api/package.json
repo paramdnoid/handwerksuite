@@ -1,5 +1,5 @@
 {
-  "name": "@handwerksuite/api",
+  "name": "@zunftgewerk/api",
   "version": "0.0.1",
   "private": true,
   "type": "module",
@@ -24,11 +24,11 @@
     "zod": "^3.24.0"
   },
   "devDependencies": {
-    "@handwerksuite/auth": "workspace:*",
-    "@handwerksuite/crypto": "workspace:*",
-    "@handwerksuite/db": "workspace:*",
-    "@handwerksuite/types": "workspace:*",
-    "@handwerksuite/typescript-config": "workspace:*",
+    "@zunftgewerk/auth": "workspace:*",
+    "@zunftgewerk/crypto": "workspace:*",
+    "@zunftgewerk/db": "workspace:*",
+    "@zunftgewerk/types": "workspace:*",
+    "@zunftgewerk/typescript-config": "workspace:*",
     "typescript": "^5.7.0",
     "vitest": "^2.1.0"
   }

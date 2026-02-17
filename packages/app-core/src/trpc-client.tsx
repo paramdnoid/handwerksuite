@@ -4,7 +4,7 @@ import { useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createTRPCReact, httpBatchLink } from "@trpc/react-query";
 import superjson from "superjson";
-import type { AppRouter } from "@handwerksuite/api";
+import type { AppRouter } from "@zunftgewerk/api";
 
 export const trpc = createTRPCReact<AppRouter>();
 
@@ -48,7 +48,7 @@ export function TRPCProvider({
           transformer: superjson,
           headers() {
             return {
-              "x-trpc-source": "handwerksuite-client",
+              "x-trpc-source": "zunftgewerk-client",
             };
           },
         }),

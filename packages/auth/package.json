@@ -1,5 +1,5 @@
 {
-  "name": "@handwerksuite/auth",
+  "name": "@zunftgewerk/auth",
   "version": "0.0.1",
   "private": true,
   "type": "module",
@@ -22,12 +22,12 @@
     "clean": "rm -rf dist .turbo"
   },
   "dependencies": {
-    "better-auth": "^1.5.0"
+    "better-auth": "^1.4.0"
   },
   "devDependencies": {
-    "@handwerksuite/db": "workspace:*",
-    "@handwerksuite/types": "workspace:*",
-    "@handwerksuite/typescript-config": "workspace:*",
+    "@zunftgewerk/db": "workspace:*",
+    "@zunftgewerk/types": "workspace:*",
+    "@zunftgewerk/typescript-config": "workspace:*",
     "typescript": "^5.7.0"
   }
 }

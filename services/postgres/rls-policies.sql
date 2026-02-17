@@ -1,4 +1,4 @@
--- Row Level Security Policies for HandwerkSuite
+-- Row Level Security Policies for ZunftGewerk
 -- Apply after running Drizzle migrations
 
 -- ── Tenants ─────────────────────────────────────────────

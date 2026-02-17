@@ -2,12 +2,12 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   transpilePackages: [
-    "@handwerksuite/ui",
-    "@handwerksuite/app-core",
-    "@handwerksuite/auth",
-    "@handwerksuite/api",
-    "@handwerksuite/sync",
-    "@handwerksuite/types",
+    "@zunftgewerk/ui",
+    "@zunftgewerk/app-core",
+    "@zunftgewerk/auth",
+    "@zunftgewerk/api",
+    "@zunftgewerk/sync",
+    "@zunftgewerk/types",
   ],
 };
 

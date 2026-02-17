@@ -1,5 +1,5 @@
 {
-  "name": "@handwerksuite/db",
+  "name": "@zunftgewerk/db",
   "version": "0.0.1",
   "private": true,
   "type": "module",
@@ -18,11 +18,11 @@
     }
   },
   "scripts": {
-    "db:generate": "drizzle-kit generate",
-    "db:migrate": "drizzle-kit migrate",
-    "db:push": "drizzle-kit push",
-    "db:seed": "tsx src/seed/index.ts",
-    "db:studio": "drizzle-kit studio",
+    "db:generate": "dotenv -e ../../.env -- drizzle-kit generate",
+    "db:migrate": "dotenv -e ../../.env -- drizzle-kit migrate",
+    "db:push": "dotenv -e ../../.env -- drizzle-kit push",
+    "db:seed": "dotenv -e ../../.env -- tsx src/seed/index.ts",
+    "db:studio": "dotenv -e ../../.env -- drizzle-kit studio",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist .turbo"
   },
@@ -31,8 +31,8 @@
     "postgres": "^3.4.0"
   },
   "devDependencies": {
-    "@handwerksuite/typescript-config": "workspace:*",
-    "@handwerksuite/types": "workspace:*",
+    "@zunftgewerk/typescript-config": "workspace:*",
+    "@zunftgewerk/types": "workspace:*",
     "drizzle-kit": "^0.30.0",
     "tsx": "^4.19.0",
     "typescript": "^5.7.0"

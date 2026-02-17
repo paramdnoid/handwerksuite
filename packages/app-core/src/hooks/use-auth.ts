@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { authClient } from "@handwerksuite/auth/client";
-import type { AuthState } from "@handwerksuite/types";
+import { authClient } from "@zunftgewerk/auth/client";
+import type { AuthState } from "@zunftgewerk/types";
 
 export function useAuth(): AuthState & {
   signIn: (email: string, password: string) => Promise<void>;

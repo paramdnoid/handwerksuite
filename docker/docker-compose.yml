@@ -1,21 +1,21 @@
-name: handwerksuite
+name: zunftgewerk
 
 services:
   # ── PostgreSQL ──────────────────────────────────────────
   postgres:
     image: postgres:16-alpine
-    container_name: handwerksuite-postgres
+    container_name: zunftgewerk-postgres
     environment:
-      POSTGRES_DB: handwerksuite
-      POSTGRES_USER: handwerksuite
-      POSTGRES_PASSWORD: handwerksuite_dev_password
+      POSTGRES_DB: zunftgewerk
+      POSTGRES_USER: zunftgewerk
+      POSTGRES_PASSWORD: zunftgewerk_dev_password
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./init-scripts:/docker-entrypoint-initdb.d
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U handwerksuite"]
+      test: ["CMD-SHELL", "pg_isready -U zunftgewerk"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -23,7 +23,7 @@ services:
   # ── OpenBao (Vault Fork) ───────────────────────────────
   openbao:
     image: quay.io/openbao/openbao:latest
-    container_name: handwerksuite-openbao
+    container_name: zunftgewerk-openbao
     cap_add:
       - IPC_LOCK
     environment:
@@ -41,7 +41,7 @@ services:
   # ── PowerSync Service ──────────────────────────────────
   powersync:
     image: journeyapps/powersync-service:latest
-    container_name: handwerksuite-powersync
+    container_name: zunftgewerk-powersync
     depends_on:
       postgres:
         condition: service_healthy
@@ -57,13 +57,13 @@ services:
   # official docker-compose. See: https://github.com/getlago/lago
   # Below is a placeholder for the API service.
   lago-api:
-    image: getlago/api:latest
-    container_name: handwerksuite-lago-api
+    image: getlago/api:v1.41.2
+    container_name: zunftgewerk-lago-api
     depends_on:
       postgres:
         condition: service_healthy
     environment:
-      DATABASE_URL: postgresql://handwerksuite:handwerksuite_dev_password@postgres:5432/lago
+      DATABASE_URL: postgresql://zunftgewerk:zunftgewerk_dev_password@postgres:5432/lago
       LAGO_API_URL: http://localhost:3200
       SECRET_KEY_BASE: change-me-in-production
     ports:

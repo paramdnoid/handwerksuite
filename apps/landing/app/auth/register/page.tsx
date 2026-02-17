@@ -13,9 +13,9 @@ import {
   CardTitle,
   Input,
   Label,
-} from "@handwerksuite/ui";
-import { useAuth } from "@handwerksuite/app-core";
-import { CRAFT_TYPE_INFO, type CraftTypeValue } from "@handwerksuite/types";
+} from "@zunftgewerk/ui";
+import { useAuth } from "@zunftgewerk/app-core";
+import { CRAFT_TYPE_INFO, type CraftTypeValue } from "@zunftgewerk/types";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -62,7 +62,7 @@ export default function RegisterPage() {
         <CardHeader className="text-center">
           <CardTitle className="text-2xl">Betrieb registrieren</CardTitle>
           <CardDescription>
-            Erstellen Sie Ihr HandwerkSuite-Konto und starten Sie kostenlos
+            Erstellen Sie Ihr ZunftGewerk-Konto und starten Sie kostenlos
           </CardDescription>
         </CardHeader>
         <CardContent>

@@ -2,7 +2,7 @@ import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { z } from "zod";
 import type { Session, User } from "better-auth";
-import { hasPermission, type Permission, type Role } from "@handwerksuite/auth";
+import { hasPermission, type Permission, type Role } from "@zunftgewerk/auth";
 
 export interface TRPCContext {
   user: User | null;

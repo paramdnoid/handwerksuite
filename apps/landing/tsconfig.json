@@ -1,5 +1,5 @@
 {
-  "extends": "@handwerksuite/typescript-config/nextjs.json",
+  "extends": "@zunftgewerk/typescript-config/nextjs.json",
   "compilerOptions": {
     "paths": {
       "@/*": ["./src/*"]

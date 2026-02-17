@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { Toaster } from "@handwerksuite/ui";
-import { TRPCProvider } from "@handwerksuite/app-core";
+import { Toaster } from "@zunftgewerk/ui";
+import { TRPCProvider } from "@zunftgewerk/app-core";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "HandwerkSuite",
+  title: "ZunftGewerk",
   description: "Ihre digitale Handwerks-Plattform",
 };
 

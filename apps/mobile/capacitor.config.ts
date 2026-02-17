@@ -1,8 +1,8 @@
 import type { CapacitorConfig } from "@capacitor/cli";
 
 const config: CapacitorConfig = {
-  appId: "de.handwerksuite.mobile",
-  appName: "HandwerkSuite",
+  appId: "de.zunftgewerk.mobile",
+  appName: "ZunftGewerk",
   webDir: "dist",
   server: {
     androidScheme: "https",
@@ -11,7 +11,7 @@ const config: CapacitorConfig = {
     CapacitorSQLite: {
       iosDatabaseLocation: "Library/CapacitorDatabase",
       iosIsEncryption: true,
-      iosKeychainPrefix: "handwerksuite",
+      iosKeychainPrefix: "zunftgewerk",
       androidIsEncryption: true,
     },
   },

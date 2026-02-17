@@ -15,7 +15,7 @@ export function createPowerSyncDb(config: PowerSyncConfig): PowerSyncDatabase {
   return new PowerSyncDatabase({
     schema: appSchema,
     database: {
-      dbFilename: config.dbFilename ?? "handwerksuite.db",
+      dbFilename: config.dbFilename ?? "zunftgewerk.db",
     },
   });
 }

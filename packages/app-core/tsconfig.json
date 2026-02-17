@@ -1,5 +1,5 @@
 {
-  "extends": "@handwerksuite/typescript-config/library.json",
+  "extends": "@zunftgewerk/typescript-config/library.json",
   "compilerOptions": {
     "outDir": "./dist"
   },

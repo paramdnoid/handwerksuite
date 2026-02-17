@@ -18,7 +18,7 @@ export function useTenant(): TenantContext {
 
   useEffect(() => {
     // Load active tenant from localStorage or session
-    const storedTenantId = localStorage.getItem("handwerksuite:tenant_id");
+    const storedTenantId = localStorage.getItem("zunftgewerk:tenant_id");
     if (storedTenantId) {
       setTenantId(storedTenantId);
       // TODO: Fetch tenant details from API
@@ -28,7 +28,7 @@ export function useTenant(): TenantContext {
 
   const switchTenant = (newTenantId: string) => {
     setTenantId(newTenantId);
-    localStorage.setItem("handwerksuite:tenant_id", newTenantId);
+    localStorage.setItem("zunftgewerk:tenant_id", newTenantId);
     // TODO: Refresh sync connection with new tenant context
   };
 

@@ -1,5 +1,5 @@
 {
-  "name": "@handwerksuite/types",
+  "name": "@zunftgewerk/types",
   "version": "0.0.1",
   "private": true,
   "type": "module",
@@ -16,7 +16,7 @@
     "clean": "rm -rf dist .turbo"
   },
   "devDependencies": {
-    "@handwerksuite/typescript-config": "workspace:*",
+    "@zunftgewerk/typescript-config": "workspace:*",
     "typescript": "^5.7.0"
   }
 }

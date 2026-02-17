@@ -1,4 +1,4 @@
-import { Button, Card, CardContent, CardHeader, CardTitle } from "@handwerksuite/ui";
+import { Button, Card, CardContent, CardHeader, CardTitle } from "@zunftgewerk/ui";
 
 export default function CustomersPage() {
   return (

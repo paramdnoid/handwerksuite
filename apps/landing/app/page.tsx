@@ -6,7 +6,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@handwerksuite/ui";
+} from "@zunftgewerk/ui";
 
 const features = [
   {
@@ -49,7 +49,7 @@ export default function LandingPage() {
         <div className="container mx-auto flex h-16 items-center justify-between px-4">
           <div className="flex items-center gap-2">
             <span className="text-xl font-bold text-primary">
-              HandwerkSuite
+              ZunftGewerk
             </span>
           </div>
           <nav className="flex items-center gap-4">
@@ -205,7 +205,7 @@ export default function LandingPage() {
         <div className="container mx-auto px-4 py-8">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
             <p className="text-sm text-muted-foreground">
-              © {new Date().getFullYear()} HandwerkSuite. Alle Rechte
+              © {new Date().getFullYear()} ZunftGewerk. Alle Rechte
               vorbehalten.
             </p>
             <div className="flex gap-4 text-sm text-muted-foreground">

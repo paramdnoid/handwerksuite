@@ -4,7 +4,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@handwerksuite/ui";
+} from "@zunftgewerk/ui";
 
 export default function DashboardPage() {
   return (
@@ -12,7 +12,7 @@ export default function DashboardPage() {
       <div>
         <h1 className="text-3xl font-bold">Dashboard</h1>
         <p className="text-muted-foreground">
-          Willkommen bei HandwerkSuite. Hier ist Ihre Betriebsübersicht.
+          Willkommen bei ZunftGewerk. Hier ist Ihre Betriebsübersicht.
         </p>
       </div>
 

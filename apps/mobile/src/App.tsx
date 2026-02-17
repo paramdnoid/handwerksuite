@@ -1,4 +1,4 @@
-import { TRPCProvider } from "@handwerksuite/app-core";
+import { TRPCProvider } from "@zunftgewerk/app-core";
 
 export default function App() {
   const apiUrl = "http://localhost:3001";
@@ -7,15 +7,15 @@ export default function App() {
     <TRPCProvider apiUrl={apiUrl}>
       <div className="min-h-screen bg-background text-foreground safe-area-inset">
         <header className="flex h-14 items-center justify-center border-b px-4 pt-safe">
-          <span className="text-lg font-bold text-primary">HandwerkSuite</span>
+          <span className="text-lg font-bold text-primary">ZunftGewerk</span>
         </header>
         <main className="p-4 pb-safe">
-          <h1 className="text-xl font-bold">HandwerkSuite Mobile</h1>
+          <h1 className="text-xl font-bold">ZunftGewerk Mobile</h1>
           <p className="mt-2 text-sm text-muted-foreground">
             Mobile-App mit nativer SQLite-Datenbank und Offline-Unterstützung.
           </p>
           <p className="mt-4 text-sm text-muted-foreground">
-            Die App-Logik wird aus @handwerksuite/app-core geladen.
+            Die App-Logik wird aus @zunftgewerk/app-core geladen.
             Capacitor stellt native APIs für iOS und Android bereit.
           </p>
         </main>

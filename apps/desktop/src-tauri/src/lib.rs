@@ -14,5 +14,5 @@ pub fn run() {
             Ok(())
         })
         .run(tauri::generate_context!())
-        .expect("error while running HandwerkSuite desktop application");
+        .expect("error while running ZunftGewerk desktop application");
 }

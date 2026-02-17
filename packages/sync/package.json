@@ -1,5 +1,5 @@
 {
-  "name": "@handwerksuite/sync",
+  "name": "@zunftgewerk/sync",
   "version": "0.0.1",
   "private": true,
   "type": "module",
@@ -17,8 +17,8 @@
     "@powersync/web": "^1.0.0"
   },
   "devDependencies": {
-    "@handwerksuite/typescript-config": "workspace:*",
-    "@handwerksuite/types": "workspace:*",
+    "@zunftgewerk/typescript-config": "workspace:*",
+    "@zunftgewerk/types": "workspace:*",
     "typescript": "^5.7.0"
   }
 }

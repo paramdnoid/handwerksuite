@@ -37,7 +37,7 @@ export const auth = betterAuth({
       memberRoleHierarchy: ["owner", "admin", "manager", "employee", "readonly"],
     }),
     twoFactor({
-      issuer: "HandwerkSuite",
+      issuer: "ZunftGewerk",
     }),
   ],
 

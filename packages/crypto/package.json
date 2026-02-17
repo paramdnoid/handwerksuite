@@ -1,5 +1,5 @@
 {
-  "name": "@handwerksuite/crypto",
+  "name": "@zunftgewerk/crypto",
   "version": "0.0.1",
   "private": true,
   "type": "module",
@@ -18,7 +18,7 @@
     "node-vault": "^0.10.0"
   },
   "devDependencies": {
-    "@handwerksuite/typescript-config": "workspace:*",
+    "@zunftgewerk/typescript-config": "workspace:*",
     "@types/node": "^22.0.0",
     "typescript": "^5.7.0",
     "vitest": "^2.1.0"

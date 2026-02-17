@@ -1,5 +1,5 @@
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
-import { appRouter, createTRPCContext } from "@handwerksuite/api";
+import { appRouter, createTRPCContext } from "@zunftgewerk/api";
 
 const handler = (req: Request) =>
   fetchRequestHandler({

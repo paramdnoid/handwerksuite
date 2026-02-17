@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { SyncStatus } from "@handwerksuite/sync";
+import type { SyncStatus } from "@zunftgewerk/sync";
 
 export function useSyncStatus(): SyncStatus {
   const [status, setStatus] = useState<SyncStatus>({
