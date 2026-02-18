@@ -15,6 +15,10 @@
     "./client": {
       "types": "./src/client.ts",
       "default": "./src/client.ts"
+    },
+    "./roles": {
+      "types": "./src/roles.ts",
+      "default": "./src/roles.ts"
     }
   },
   "scripts": {
@@ -23,7 +27,8 @@
   },
   "dependencies": {
     "@zunftgewerk/db": "workspace:*",
-    "better-auth": "^1.4.0"
+    "better-auth": "^1.4.0",
+    "@zunftgewerk/env": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

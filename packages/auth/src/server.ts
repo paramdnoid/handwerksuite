@@ -1,17 +1,15 @@
-import { betterAuth } from "better-auth";
-import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { twoFactor } from "better-auth/plugins";
-import { db } from "@zunftgewerk/db/client";
-import {
-  users,
-  sessions,
-  accounts,
-  verifications,
-} from "@zunftgewerk/db/schema";
+import { betterAuth } from 'better-auth';
+import { drizzleAdapter } from 'better-auth/adapters/drizzle';
+import { twoFactor } from 'better-auth/plugins';
+import { db } from '@zunftgewerk/db/client';
+import { users, sessions, accounts, verifications } from '@zunftgewerk/db/schema';
+import { serverEnv } from '@zunftgewerk/env/server';
+
+const env = serverEnv();
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
-    provider: "pg",
+    provider: 'pg',
     schema: {
       user: users,
       session: sessions,
@@ -20,13 +18,14 @@ export const auth = betterAuth({
     },
   }),
 
-  secret: process.env.BETTER_AUTH_SECRET!,
-  baseURL: process.env.BETTER_AUTH_URL,
+  secret: env.BETTER_AUTH_SECRET,
+  baseURL: env.BETTER_AUTH_URL,
 
   advanced: {
-    generateId: ({ model: _model, size: _size }: { model: string; size: number }) => crypto.randomUUID(),
+    generateId: ({ model: _model, size: _size }: { model: string; size: number }) =>
+      crypto.randomUUID(),
     database: {
-      generateId: "uuid",
+      generateId: 'uuid',
     },
   },
 
@@ -38,14 +37,14 @@ export const auth = betterAuth({
 
   socialProviders: {
     google: {
-      clientId: process.env.GOOGLE_CLIENT_ID ?? "",
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
-      enabled: !!process.env.GOOGLE_CLIENT_ID,
+      clientId: env.GOOGLE_CLIENT_ID ?? '',
+      clientSecret: env.GOOGLE_CLIENT_SECRET ?? '',
+      enabled: !!env.GOOGLE_CLIENT_ID,
     },
     microsoft: {
-      clientId: process.env.MICROSOFT_CLIENT_ID ?? "",
-      clientSecret: process.env.MICROSOFT_CLIENT_SECRET ?? "",
-      enabled: !!process.env.MICROSOFT_CLIENT_ID,
+      clientId: env.MICROSOFT_CLIENT_ID ?? '',
+      clientSecret: env.MICROSOFT_CLIENT_SECRET ?? '',
+      enabled: !!env.MICROSOFT_CLIENT_ID,
     },
   },
 

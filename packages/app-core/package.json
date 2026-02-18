@@ -8,13 +8,21 @@
       "types": "./src/index.ts",
       "default": "./src/index.ts"
     },
-    "./hooks/*": {
-      "types": "./src/hooks/*.ts",
-      "default": "./src/hooks/*.ts"
+    "./hooks": {
+      "types": "./src/hooks/index.ts",
+      "default": "./src/hooks/index.ts"
     },
-    "./features/*": {
-      "types": "./src/features/*/index.ts",
-      "default": "./src/features/*/index.ts"
+    "./hooks/use-auth": {
+      "types": "./src/hooks/use-auth.ts",
+      "default": "./src/hooks/use-auth.ts"
+    },
+    "./hooks/use-tenant": {
+      "types": "./src/hooks/use-tenant.ts",
+      "default": "./src/hooks/use-tenant.ts"
+    },
+    "./hooks/use-sync-status": {
+      "types": "./src/hooks/use-sync-status.ts",
+      "default": "./src/hooks/use-sync-status.ts"
     }
   },
   "scripts": {

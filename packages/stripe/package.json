@@ -29,7 +29,8 @@
     "@zunftgewerk/db": "workspace:*",
     "@zunftgewerk/types": "workspace:*",
     "drizzle-orm": "^0.38.0",
-    "stripe": "^17.7.0"
+    "stripe": "^17.7.0",
+    "@zunftgewerk/env": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

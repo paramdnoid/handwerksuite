@@ -1,8 +1,8 @@
-import { initTRPC, TRPCError } from "@trpc/server";
-import superjson from "superjson";
-import { z } from "zod";
-import type { Session, User } from "better-auth";
-import { hasPermission, type Permission, type Role } from "@zunftgewerk/auth";
+import { initTRPC, TRPCError } from '@trpc/server';
+import superjson from 'superjson';
+import { z } from 'zod';
+import type { Session, User } from 'better-auth';
+import { hasPermission, type Permission, type Role } from '@zunftgewerk/auth/roles';
 
 // ── Context ──────────────────────────────────────────────
 
@@ -42,8 +42,7 @@ const t = initTRPC.context<TRPCContext>().create({
       ...shape,
       data: {
         ...shape.data,
-        zodError:
-          error.cause instanceof z.ZodError ? error.cause.flatten() : null,
+        zodError: error.cause instanceof z.ZodError ? error.cause.flatten() : null,
       },
     };
   },
@@ -56,7 +55,7 @@ export const publicProcedure = t.procedure;
 
 const enforceAuth = t.middleware(({ ctx, next }) => {
   if (!ctx.user || !ctx.session) {
-    throw new TRPCError({ code: "UNAUTHORIZED" });
+    throw new TRPCError({ code: 'UNAUTHORIZED' });
   }
   return next({
     ctx: {
@@ -74,8 +73,8 @@ export const protectedProcedure = t.procedure.use(enforceAuth);
 const enforceCompany = t.middleware(({ ctx, next }) => {
   if (!ctx.user || !ctx.session || !ctx.companyId || !ctx.companyRole) {
     throw new TRPCError({
-      code: "UNAUTHORIZED",
-      message: "Company context required",
+      code: 'UNAUTHORIZED',
+      message: 'Company context required',
     });
   }
   return next({
@@ -90,9 +89,7 @@ const enforceCompany = t.middleware(({ ctx, next }) => {
   });
 });
 
-export const companyProcedure = t.procedure
-  .use(enforceAuth)
-  .use(enforceCompany);
+export const companyProcedure = t.procedure.use(enforceAuth).use(enforceCompany);
 
 // ── Permission-checked Procedure ─────────────────────────
 
@@ -100,7 +97,7 @@ export function withPermission(permission: Permission) {
   return companyProcedure.use(({ ctx, next }) => {
     if (!hasPermission(ctx.companyRole, permission)) {
       throw new TRPCError({
-        code: "FORBIDDEN",
+        code: 'FORBIDDEN',
         message: `Missing permission: ${permission}`,
       });
     }

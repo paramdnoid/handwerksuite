@@ -1,33 +1,37 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
+import bundleAnalyzer from '@next/bundle-analyzer';
 
-const isDev = process.env.NODE_ENV === "development";
+const isDev = process.env.NODE_ENV === 'development';
+const withBundleAnalyzer = bundleAnalyzer({
+  enabled: process.env.ANALYZE === 'true',
+});
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   transpilePackages: [
-    "@zunftgewerk/ui",
-    "@zunftgewerk/app-core",
-    "@zunftgewerk/auth",
-    "@zunftgewerk/db",
-    "@zunftgewerk/stripe",
-    "@zunftgewerk/types",
+    '@zunftgewerk/ui',
+    '@zunftgewerk/app-core',
+    '@zunftgewerk/auth',
+    '@zunftgewerk/db',
+    '@zunftgewerk/stripe',
+    '@zunftgewerk/types',
   ],
 
   async headers() {
     return [
       {
-        source: "/(.*)",
+        source: '/(.*)',
         headers: [
-          { key: "X-Content-Type-Options", value: "nosniff" },
-          { key: "X-Frame-Options", value: "DENY" },
-          { key: "X-DNS-Prefetch-Control", value: "on" },
-          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+          { key: 'X-Frame-Options', value: 'DENY' },
+          { key: 'X-DNS-Prefetch-Control', value: 'on' },
+          { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
           {
-            key: "Permissions-Policy",
-            value: "camera=(), microphone=(), geolocation=()",
+            key: 'Permissions-Policy',
+            value: 'camera=(), microphone=(), geolocation=()',
           },
           {
-            key: "Content-Security-Policy",
+            key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",
               "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
@@ -36,17 +40,17 @@ const nextConfig: NextConfig = {
               "img-src 'self' data: blob: https:",
               [
                 "connect-src 'self'",
-                isDev && "http://localhost:*",
-                "https://*.zunftgewerk.de",
-                "https://*.sentry.io",
-                "https://*.stripe.com",
+                isDev && 'http://localhost:*',
+                'https://*.zunftgewerk.de',
+                'https://*.sentry.io',
+                'https://*.stripe.com',
               ]
                 .filter(Boolean)
-                .join(" "),
+                .join(' '),
               "frame-ancestors 'none'",
               "base-uri 'self'",
               "form-action 'self'",
-            ].join("; "),
+            ].join('; '),
           },
         ],
       },
@@ -54,4 +58,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+export default withBundleAnalyzer(nextConfig);

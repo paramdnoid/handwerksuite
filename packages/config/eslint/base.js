@@ -8,7 +8,7 @@ module.exports = {
   },
   extends: [
     "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/strict",
     "prettier",
   ],
   plugins: ["@typescript-eslint"],
@@ -22,6 +22,8 @@ module.exports = {
       "warn",
       { prefer: "type-imports" },
     ],
+    "@typescript-eslint/no-non-null-assertion": "warn",
+    "@typescript-eslint/prefer-ts-expect-error": "warn",
   },
   ignorePatterns: ["dist/", "node_modules/", ".next/", ".turbo/"],
 };

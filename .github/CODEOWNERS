@@ -1,0 +1,24 @@
+# Default owners for everything
+* @zunftgewerk/core-team
+
+# Security-critical packages
+packages/crypto/ @zunftgewerk/security-team
+packages/auth/ @zunftgewerk/security-team
+services/openbao/ @zunftgewerk/security-team
+services/postgres/ @zunftgewerk/security-team
+
+# Backend
+packages/db/ @zunftgewerk/backend-team
+packages/api/ @zunftgewerk/backend-team
+packages/stripe/ @zunftgewerk/backend-team
+
+# Frontend
+packages/ui/ @zunftgewerk/frontend-team
+apps/landing/ @zunftgewerk/frontend-team
+apps/web/ @zunftgewerk/frontend-team
+apps/desktop/ @zunftgewerk/frontend-team
+apps/mobile/ @zunftgewerk/frontend-team
+
+# Infrastructure
+docker/ @zunftgewerk/devops-team
+.github/ @zunftgewerk/devops-team

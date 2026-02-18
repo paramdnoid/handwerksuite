@@ -8,9 +8,29 @@
       "types": "./src/index.ts",
       "default": "./src/index.ts"
     },
-    "./*": {
-      "types": "./src/*.ts",
-      "default": "./src/*.ts"
+    "./api": {
+      "types": "./src/api.ts",
+      "default": "./src/api.ts"
+    },
+    "./auth": {
+      "types": "./src/auth.ts",
+      "default": "./src/auth.ts"
+    },
+    "./company": {
+      "types": "./src/company.ts",
+      "default": "./src/company.ts"
+    },
+    "./craft-types": {
+      "types": "./src/craft-types.ts",
+      "default": "./src/craft-types.ts"
+    },
+    "./modules": {
+      "types": "./src/modules.ts",
+      "default": "./src/modules.ts"
+    },
+    "./subscription": {
+      "types": "./src/subscription.ts",
+      "default": "./src/subscription.ts"
     }
   },
   "scripts": {

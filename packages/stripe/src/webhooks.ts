@@ -1,78 +1,61 @@
-import type Stripe from "stripe";
-import { eq } from "drizzle-orm";
-import { db } from "@zunftgewerk/db/client";
-import {
-  companies,
-  subscriptions,
-  invoices,
-} from "@zunftgewerk/db/schema";
-import { getStripe } from "./client";
-import type { SubscriptionTier } from "@zunftgewerk/types";
+import type Stripe from 'stripe';
+import { eq } from 'drizzle-orm';
+import { db } from '@zunftgewerk/db/client';
+import { companies, subscriptions, invoices } from '@zunftgewerk/db/schema';
+import { getStripe } from './client';
+import type { SubscriptionTier } from '@zunftgewerk/types';
+import { serverEnv } from '@zunftgewerk/env/server';
 
 // ── Construct Webhook Event ─────────────────────────────
 
-export function constructWebhookEvent(
-  body: string | Buffer,
-  signature: string,
-): Stripe.Event {
+export function constructWebhookEvent(body: string | Buffer, signature: string): Stripe.Event {
   const stripe = getStripe();
-  const secret = process.env.STRIPE_WEBHOOK_SECRET;
-  if (!secret) {
-    throw new Error("STRIPE_WEBHOOK_SECRET is not set.");
-  }
+  const secret = serverEnv().STRIPE_WEBHOOK_SECRET;
+  if (!secret) throw new Error('STRIPE_WEBHOOK_SECRET is not configured');
   return stripe.webhooks.constructEvent(body, signature, secret);
 }
 
 // ── Tier Mapping ────────────────────────────────────────
 
 function mapPriceToTier(priceId: string): SubscriptionTier {
+  const env = serverEnv();
   const mapping: Record<string, SubscriptionTier> = {};
+  if (env.STRIPE_PRICE_STARTER_MONTHLY) mapping[env.STRIPE_PRICE_STARTER_MONTHLY] = 'starter';
+  if (env.STRIPE_PRICE_STARTER_YEARLY) mapping[env.STRIPE_PRICE_STARTER_YEARLY] = 'starter';
+  if (env.STRIPE_PRICE_PROFESSIONAL_MONTHLY)
+    mapping[env.STRIPE_PRICE_PROFESSIONAL_MONTHLY] = 'professional';
+  if (env.STRIPE_PRICE_PROFESSIONAL_YEARLY)
+    mapping[env.STRIPE_PRICE_PROFESSIONAL_YEARLY] = 'professional';
+  if (env.STRIPE_PRICE_ENTERPRISE_MONTHLY)
+    mapping[env.STRIPE_PRICE_ENTERPRISE_MONTHLY] = 'enterprise';
+  if (env.STRIPE_PRICE_ENTERPRISE_YEARLY)
+    mapping[env.STRIPE_PRICE_ENTERPRISE_YEARLY] = 'enterprise';
 
-  const envPairs = [
-    ["STRIPE_PRICE_STARTER_MONTHLY", "starter"],
-    ["STRIPE_PRICE_STARTER_YEARLY", "starter"],
-    ["STRIPE_PRICE_PROFESSIONAL_MONTHLY", "professional"],
-    ["STRIPE_PRICE_PROFESSIONAL_YEARLY", "professional"],
-    ["STRIPE_PRICE_ENTERPRISE_MONTHLY", "enterprise"],
-    ["STRIPE_PRICE_ENTERPRISE_YEARLY", "enterprise"],
-  ] as const;
-
-  for (const [envKey, tier] of envPairs) {
-    const id = process.env[envKey];
-    if (id) mapping[id] = tier;
-  }
-
-  return mapping[priceId] ?? "professional";
+  return mapping[priceId] ?? 'professional';
 }
 
 // ── Handle Webhook Event ────────────────────────────────
 
 export async function handleWebhookEvent(event: Stripe.Event): Promise<void> {
   switch (event.type) {
-    case "checkout.session.completed":
-      await handleCheckoutCompleted(
-        event.data.object as Stripe.Checkout.Session,
-      );
+    case 'checkout.session.completed':
+      await handleCheckoutCompleted(event.data.object as Stripe.Checkout.Session);
       break;
 
-    case "customer.subscription.created":
-    case "customer.subscription.updated":
-      await handleSubscriptionUpsert(
-        event.data.object as Stripe.Subscription,
-      );
+    case 'customer.subscription.created':
+    case 'customer.subscription.updated':
+      await handleSubscriptionUpsert(event.data.object as Stripe.Subscription);
       break;
 
-    case "customer.subscription.deleted":
-      await handleSubscriptionDeleted(
-        event.data.object as Stripe.Subscription,
-      );
+    case 'customer.subscription.deleted':
+      await handleSubscriptionDeleted(event.data.object as Stripe.Subscription);
       break;
 
-    case "invoice.paid":
+    case 'invoice.paid':
       await handleInvoicePaid(event.data.object as Stripe.Invoice);
       break;
 
-    case "invoice.payment_failed":
+    case 'invoice.payment_failed':
       await handleInvoicePaymentFailed(event.data.object as Stripe.Invoice);
       break;
 
@@ -83,13 +66,11 @@ export async function handleWebhookEvent(event: Stripe.Event): Promise<void> {
 
 // ── Handlers ────────────────────────────────────────────
 
-async function handleCheckoutCompleted(
-  session: Stripe.Checkout.Session,
-): Promise<void> {
+async function handleCheckoutCompleted(session: Stripe.Checkout.Session): Promise<void> {
   const companyId = session.metadata?.companyId;
   if (!companyId) return;
 
-  if (session.customer && typeof session.customer === "string") {
+  if (session.customer && typeof session.customer === 'string') {
     await db
       .update(companies)
       .set({ stripeCustomerId: session.customer, updatedAt: new Date() })
@@ -97,9 +78,7 @@ async function handleCheckoutCompleted(
   }
 }
 
-async function handleSubscriptionUpsert(
-  subscription: Stripe.Subscription,
-): Promise<void> {
+async function handleSubscriptionUpsert(subscription: Stripe.Subscription): Promise<void> {
   const companyId = subscription.metadata?.companyId;
   if (!companyId) return;
 
@@ -117,12 +96,8 @@ async function handleSubscriptionUpsert(
     currentPeriodStart: new Date(subscription.current_period_start * 1000),
     currentPeriodEnd: new Date(subscription.current_period_end * 1000),
     cancelAtPeriodEnd: subscription.cancel_at_period_end,
-    canceledAt: subscription.canceled_at
-      ? new Date(subscription.canceled_at * 1000)
-      : null,
-    trialEnd: subscription.trial_end
-      ? new Date(subscription.trial_end * 1000)
-      : null,
+    canceledAt: subscription.canceled_at ? new Date(subscription.canceled_at * 1000) : null,
+    trialEnd: subscription.trial_end ? new Date(subscription.trial_end * 1000) : null,
     updatedAt: new Date(),
   };
 
@@ -148,15 +123,13 @@ async function handleSubscriptionUpsert(
     .where(eq(companies.id, companyId));
 }
 
-async function handleSubscriptionDeleted(
-  subscription: Stripe.Subscription,
-): Promise<void> {
+async function handleSubscriptionDeleted(subscription: Stripe.Subscription): Promise<void> {
   const companyId = subscription.metadata?.companyId;
 
   await db
     .update(subscriptions)
     .set({
-      status: "canceled",
+      status: 'canceled',
       canceledAt: new Date(),
       updatedAt: new Date(),
     })
@@ -165,7 +138,7 @@ async function handleSubscriptionDeleted(
   if (companyId) {
     await db
       .update(companies)
-      .set({ subscriptionTier: "free", updatedAt: new Date() })
+      .set({ subscriptionTier: 'free', updatedAt: new Date() })
       .where(eq(companies.id, companyId));
   }
 }
@@ -178,9 +151,7 @@ async function handleInvoicePaid(invoice: Stripe.Invoice): Promise<void> {
     ? await db.query.subscriptions.findFirst({
         where: eq(
           subscriptions.stripeSubscriptionId,
-          typeof invoice.subscription === "string"
-            ? invoice.subscription
-            : invoice.subscription.id,
+          typeof invoice.subscription === 'string' ? invoice.subscription : invoice.subscription.id,
         ),
         columns: { id: true },
       })
@@ -193,15 +164,11 @@ async function handleInvoicePaid(invoice: Stripe.Invoice): Promise<void> {
     amountDue: invoice.amount_due,
     amountPaid: invoice.amount_paid,
     currency: invoice.currency,
-    status: "paid" as const,
+    status: 'paid' as const,
     invoicePdfUrl: invoice.invoice_pdf ?? null,
     hostedInvoiceUrl: invoice.hosted_invoice_url ?? null,
-    periodStart: invoice.period_start
-      ? new Date(invoice.period_start * 1000)
-      : null,
-    periodEnd: invoice.period_end
-      ? new Date(invoice.period_end * 1000)
-      : null,
+    periodStart: invoice.period_start ? new Date(invoice.period_start * 1000) : null,
+    periodEnd: invoice.period_end ? new Date(invoice.period_end * 1000) : null,
     paidAt: new Date(),
   };
 
@@ -210,10 +177,7 @@ async function handleInvoicePaid(invoice: Stripe.Invoice): Promise<void> {
   });
 
   if (existing) {
-    await db
-      .update(invoices)
-      .set(values)
-      .where(eq(invoices.stripeInvoiceId, invoice.id));
+    await db.update(invoices).set(values).where(eq(invoices.stripeInvoiceId, invoice.id));
   } else {
     await db.insert(invoices).values({
       ...values,
@@ -222,9 +186,7 @@ async function handleInvoicePaid(invoice: Stripe.Invoice): Promise<void> {
   }
 }
 
-async function handleInvoicePaymentFailed(
-  invoice: Stripe.Invoice,
-): Promise<void> {
+async function handleInvoicePaymentFailed(invoice: Stripe.Invoice): Promise<void> {
   if (!invoice.id) return;
 
   const existing = await db.query.invoices.findFirst({
@@ -234,7 +196,7 @@ async function handleInvoicePaymentFailed(
   if (existing) {
     await db
       .update(invoices)
-      .set({ status: "open" })
+      .set({ status: 'open' })
       .where(eq(invoices.stripeInvoiceId, invoice.id));
   }
 }
