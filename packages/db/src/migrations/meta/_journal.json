@@ -8,6 +8,13 @@
       "when": 1771299959357,
       "tag": "0000_vengeful_inhumans",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1771373935018,
+      "tag": "0001_moaning_korvac",
+      "breakpoints": true
     }
   ]
 }

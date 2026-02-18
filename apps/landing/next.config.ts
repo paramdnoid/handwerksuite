@@ -1,5 +1,7 @@
 import type { NextConfig } from "next";
 
+const isDev = process.env.NODE_ENV === "development";
+
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   transpilePackages: [
@@ -32,7 +34,15 @@ const nextConfig: NextConfig = {
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "font-src 'self' https://fonts.gstatic.com",
               "img-src 'self' data: blob: https:",
-              "connect-src 'self' https://*.zunftgewerk.de https://*.sentry.io https://*.stripe.com",
+              [
+                "connect-src 'self'",
+                isDev && "http://localhost:*",
+                "https://*.zunftgewerk.de",
+                "https://*.sentry.io",
+                "https://*.stripe.com",
+              ]
+                .filter(Boolean)
+                .join(" "),
               "frame-ancestors 'none'",
               "base-uri 'self'",
               "form-action 'self'",

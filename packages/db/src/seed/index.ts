@@ -1,12 +1,38 @@
 import { hashPassword } from "better-auth/crypto";
+import { sql } from "drizzle-orm";
 import { db } from "../client";
 import { companies, companySettings } from "../schema/companies";
 import { users, accounts } from "../schema/users";
 import { companyMembers } from "../schema/members";
 import { modules, craftTypeModules, companyModules } from "../schema/modules";
+import { subscriptions, invoices } from "../schema/subscriptions";
 
 async function seed() {
   console.log("Seeding database...");
+
+  // ── Clean existing data (respects FK order) ────────────────
+  console.log("  Cleaning existing data...");
+  await db.execute(sql`
+    TRUNCATE
+      invoices,
+      subscriptions,
+      audit_log,
+      company_modules,
+      craft_type_modules,
+      company_members,
+      invitations,
+      company_settings,
+      authority_assignments,
+      projects,
+      customers,
+      accounts,
+      sessions,
+      verifications,
+      modules,
+      companies,
+      users
+    CASCADE
+  `);
 
   // ── Core Modules (available to all craft types) ──────────
   const coreModules = await db
@@ -133,6 +159,7 @@ async function seed() {
       craftType: "elektro",
       hwkNumber: "HWK-B-2024-001234",
       subscriptionTier: "professional",
+      stripeCustomerId: "cus_seed_mueller_elektro",
       isActive: true,
     })
     .returning();
@@ -186,6 +213,55 @@ async function seed() {
     })),
   );
 
+  // ── Subscription for Craft Business ─────────────────────
+  const now = new Date();
+  const periodStart = new Date(now.getFullYear(), now.getMonth(), 1);
+  const periodEnd = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+
+  const [subscription] = await db
+    .insert(subscriptions)
+    .values({
+      companyId: craftBusiness.id,
+      stripeSubscriptionId: "sub_seed_mueller_professional",
+      stripePriceId: "price_seed_professional_monthly",
+      tier: "professional",
+      status: "active",
+      currentPeriodStart: periodStart,
+      currentPeriodEnd: periodEnd,
+      cancelAtPeriodEnd: false,
+    })
+    .returning();
+
+  // ── Example Invoices ──────────────────────────────────────
+  const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+  const lastMonthEnd = new Date(now.getFullYear(), now.getMonth(), 1);
+
+  await db.insert(invoices).values([
+    {
+      companyId: craftBusiness.id,
+      stripeInvoiceId: "in_seed_mueller_001",
+      subscriptionId: subscription.id,
+      amountDue: 4900,
+      amountPaid: 4900,
+      currency: "eur",
+      status: "paid",
+      periodStart: lastMonth,
+      periodEnd: lastMonthEnd,
+      paidAt: lastMonth,
+    },
+    {
+      companyId: craftBusiness.id,
+      stripeInvoiceId: "in_seed_mueller_002",
+      subscriptionId: subscription.id,
+      amountDue: 4900,
+      amountPaid: 0,
+      currency: "eur",
+      status: "open",
+      periodStart,
+      periodEnd,
+    },
+  ]);
+
   console.log("Seed completed:");
   console.log(`  - Authority: ${hwk.name} (${hwk.id})`);
   console.log(`  - Craft Business: ${craftBusiness.name} (${craftBusiness.id})`);
@@ -195,6 +271,8 @@ async function seed() {
   console.log(`  - Core Modules: ${coreModules.length}`);
   console.log(`  - Craft Modules: ${craftModules.length}`);
   console.log(`  - Activated Modules: ${defaultModuleIds.length}`);
+  console.log(`  - Subscription: ${subscription.tier} (${subscription.stripeSubscriptionId})`);
+  console.log(`  - Invoices: 2 (1 paid, 1 open)`);
 }
 
 seed()

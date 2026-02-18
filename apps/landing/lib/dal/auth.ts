@@ -47,30 +47,34 @@ export interface UserWithCompany {
 // ── Get Server Session ──────────────────────────────────
 
 export async function getServerSession(): Promise<ServerSession | null> {
-  const headersList = await headers();
-  const sessionData = await auth.api.getSession({
-    headers: headersList,
-  });
+  try {
+    const headersList = await headers();
+    const sessionData = await auth.api.getSession({
+      headers: headersList,
+    });
 
-  if (!sessionData?.user || !sessionData?.session) {
+    if (!sessionData?.user || !sessionData?.session) {
+      return null;
+    }
+
+    return {
+      user: {
+        id: sessionData.user.id,
+        name: sessionData.user.name,
+        email: sessionData.user.email,
+        emailVerified: sessionData.user.emailVerified,
+        image: sessionData.user.image ?? null,
+      },
+      session: {
+        id: sessionData.session.id,
+        token: sessionData.session.token,
+        userId: sessionData.session.userId,
+        expiresAt: sessionData.session.expiresAt,
+      },
+    };
+  } catch {
     return null;
   }
-
-  return {
-    user: {
-      id: sessionData.user.id,
-      name: sessionData.user.name,
-      email: sessionData.user.email,
-      emailVerified: sessionData.user.emailVerified,
-      image: sessionData.user.image ?? null,
-    },
-    session: {
-      id: sessionData.session.id,
-      token: sessionData.session.token,
-      userId: sessionData.session.userId,
-      expiresAt: sessionData.session.expiresAt,
-    },
-  };
 }
 
 // ── Require Session (redirects if not authenticated) ────
