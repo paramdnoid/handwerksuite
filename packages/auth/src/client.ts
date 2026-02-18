@@ -1,4 +1,5 @@
 import { createAuthClient } from "better-auth/client";
+import { twoFactorClient } from "better-auth/client/plugins";
 
 function getBaseURL(): string {
   if (typeof import.meta !== "undefined" && (import.meta as any).env?.VITE_API_URL) {
@@ -12,6 +13,7 @@ function getBaseURL(): string {
 
 export const authClient = createAuthClient({
   baseURL: getBaseURL(),
+  plugins: [twoFactorClient()],
 });
 
 export type AuthClient = typeof authClient;

@@ -63,7 +63,7 @@ export function RegisterForm() {
       return
     }
 
-    const { name, companyName, craftType: selectedCraft, email, password } = result.data
+    const { name, companyName: _companyName, craftType: _selectedCraft, email, password } = result.data
 
     try {
       // Step 1: Create user account (Better Auth)

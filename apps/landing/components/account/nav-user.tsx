@@ -20,16 +20,18 @@ import {
 } from "@zunftgewerk/ui";
 import { useAuth } from "@zunftgewerk/app-core";
 
-export function NavUser() {
+interface NavUserProps {
+  user: {
+    name: string;
+    email: string;
+    image: string | null;
+  };
+}
+
+export function NavUser({ user }: NavUserProps) {
   const { isMobile } = useSidebar();
   const { signOut } = useAuth();
   const router = useRouter();
-
-  // TODO: Replace with real user data from useAuth() once auth is integrated
-  const user = {
-    name: "Max Müller",
-    email: "max@mueller-shk.de",
-  };
 
   const initials = user.name
     .split(" ")
@@ -53,7 +55,10 @@ export function NavUser() {
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarFallback className="rounded-lg">{initials}</AvatarFallback>
+                <AvatarImage src={user.image ?? undefined} />
+                <AvatarFallback className="rounded-lg">
+                  {initials}
+                </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">{user.name}</span>
@@ -73,7 +78,10 @@ export function NavUser() {
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarFallback className="rounded-lg">{initials}</AvatarFallback>
+                  <AvatarImage src={user.image ?? undefined} />
+                  <AvatarFallback className="rounded-lg">
+                    {initials}
+                  </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">{user.name}</span>

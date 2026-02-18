@@ -2,9 +2,6 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
--- Create separate database for Lago billing
-CREATE DATABASE lago;
-
 -- ── Row Level Security helper function ───────────────────
 CREATE OR REPLACE FUNCTION current_company_id()
 RETURNS uuid AS $$

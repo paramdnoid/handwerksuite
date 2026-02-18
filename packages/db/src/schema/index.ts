@@ -4,4 +4,5 @@ export * from "./members";
 export * from "./modules";
 export * from "./projects";
 export * from "./customers";
+export * from "./subscriptions";
 export * from "./audit-log";

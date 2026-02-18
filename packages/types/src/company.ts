@@ -37,7 +37,7 @@ export interface Company {
   vatId: string | null;
   logoUrl: string | null;
   subscriptionTier: SubscriptionTier;
-  lagoCustomerId: string | null;
+  stripeCustomerId: string | null;
   isActive: boolean;
   onboardingCompletedAt: Date | null;
   createdAt: Date;

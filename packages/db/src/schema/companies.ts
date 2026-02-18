@@ -87,8 +87,7 @@ export const companies = pgTable(
     subscriptionTier: subscriptionTierEnum("subscription_tier")
       .default("free")
       .notNull(),
-    lagoCustomerId: text("lago_customer_id"),
-    lagoSubscriptionId: text("lago_subscription_id"),
+    stripeCustomerId: text("stripe_customer_id").unique(),
     isActive: boolean("is_active").default(true).notNull(),
     onboardingCompletedAt: timestamp("onboarding_completed_at", {
       withTimezone: true,

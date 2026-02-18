@@ -52,22 +52,6 @@ services:
     volumes:
       - ./powersync-config:/config
 
-  # ── Lago Billing ───────────────────────────────────────
-  # Lago requires multiple services. For development, use Lago's
-  # official docker-compose. See: https://github.com/getlago/lago
-  # Below is a placeholder for the API service.
-  lago-api:
-    image: getlago/api:v1.41.2
-    container_name: zunftgewerk-lago-api
-    depends_on:
-      postgres:
-        condition: service_healthy
-    environment:
-      DATABASE_URL: postgresql://zunftgewerk:zunftgewerk_dev_password@postgres:5432/lago
-      LAGO_API_URL: http://localhost:3200
-      SECRET_KEY_BASE: change-me-in-production
-    ports:
-      - "3200:3000"
 
 volumes:
   postgres_data:

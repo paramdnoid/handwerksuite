@@ -41,15 +41,17 @@ export interface SubscriptionLimits {
 export interface Subscription {
   id: string;
   companyId: string;
-  planId: string;
+  stripeSubscriptionId: string;
+  stripePriceId: string;
   tier: SubscriptionTier;
   status: SubscriptionStatus;
-  lagoCustomerId: string | null;
-  lagoSubscriptionId: string | null;
   currentPeriodStart: Date;
   currentPeriodEnd: Date;
   cancelAtPeriodEnd: boolean;
+  canceledAt: Date | null;
+  trialEnd: Date | null;
   createdAt: Date;
+  updatedAt: Date;
 }
 
 // ── Subscription Status ──────────────────────────────────
@@ -59,18 +61,35 @@ export type SubscriptionStatus =
   | "trialing"
   | "past_due"
   | "canceled"
-  | "paused";
+  | "paused"
+  | "incomplete"
+  | "incomplete_expired"
+  | "unpaid";
 
 // ── Billing Invoice ──────────────────────────────────────
 
 export interface BillingInvoice {
   id: string;
   companyId: string;
-  subscriptionId: string;
-  amount: number;
-  currency: "EUR";
-  status: "draft" | "pending" | "paid" | "voided";
-  issuedAt: Date;
-  dueAt: Date;
+  stripeInvoiceId: string;
+  subscriptionId: string | null;
+  amountDue: number;
+  amountPaid: number;
+  currency: string;
+  status: InvoiceStatus;
+  invoicePdfUrl: string | null;
+  hostedInvoiceUrl: string | null;
+  periodStart: Date | null;
+  periodEnd: Date | null;
   paidAt: Date | null;
+  createdAt: Date;
 }
+
+// ── Invoice Status ───────────────────────────────────────
+
+export type InvoiceStatus =
+  | "draft"
+  | "open"
+  | "paid"
+  | "void"
+  | "uncollectible";

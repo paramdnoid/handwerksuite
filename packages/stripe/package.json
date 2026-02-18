@@ -1,0 +1,39 @@
+{
+  "name": "@zunftgewerk/stripe",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./client": {
+      "types": "./src/client.ts",
+      "default": "./src/client.ts"
+    },
+    "./plans": {
+      "types": "./src/plans.ts",
+      "default": "./src/plans.ts"
+    },
+    "./webhooks": {
+      "types": "./src/webhooks.ts",
+      "default": "./src/webhooks.ts"
+    }
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist .turbo"
+  },
+  "dependencies": {
+    "@zunftgewerk/db": "workspace:*",
+    "@zunftgewerk/types": "workspace:*",
+    "drizzle-orm": "^0.38.0",
+    "stripe": "^17.7.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@zunftgewerk/typescript-config": "workspace:*",
+    "typescript": "^5.7.0"
+  }
+}

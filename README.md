@@ -47,7 +47,7 @@ handwerksuite/
 | Sync       | PowerSync (self-hosted)        | Apache-2.0         |
 | Encryption | Node.js crypto (AES-256-GCM)   | MIT                |
 | Key Mgmt   | OpenBao (Vault-Fork)           | MPL-2.0            |
-| Billing    | Lago (self-hosted)             | AGPL-3.0           |
+| Billing    | Stripe                         | Proprietaer (SaaS) |
 
 ## Sicherheitsarchitektur
 

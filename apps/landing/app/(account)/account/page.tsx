@@ -4,7 +4,6 @@ import {
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle,
   Badge,
   Progress,
 } from "@zunftgewerk/ui";
@@ -17,40 +16,54 @@ import {
   ArrowUpRight,
   Settings,
 } from "lucide-react";
-import {
-  mockUser,
-  mockCompany,
-  mockSubscription,
-  mockSubscriptionLimits,
-  mockCurrentUsage,
-  mockModules,
-  mockMembers,
-} from "@/lib/mock-data";
+import { requireUserWithCompany } from "@/lib/dal/auth";
+import { getCompanyMembers } from "@/lib/dal/members";
+import { getCompanyModules } from "@/lib/dal/modules";
+import { getSubscriptionWithPlan, getCurrentUsage } from "@/lib/dal/subscription";
+import type { SubscriptionTier } from "@zunftgewerk/types";
 
-export default function AccountOverviewPage() {
-  const activeModules = mockModules.filter((m) => m.isActive).length;
-  const totalModules = mockModules.filter((m) => m.isAvailable).length;
-  const storagePercent = Math.round(
-    (mockCurrentUsage.storageMb / mockSubscriptionLimits.maxStorageMb) * 100,
-  );
-  const storageGb = (mockCurrentUsage.storageMb / 1024).toFixed(1);
-  const storageLimitGb = (mockSubscriptionLimits.maxStorageMb / 1024).toFixed(0);
+export default async function AccountOverviewPage() {
+  const ctx = await requireUserWithCompany();
+
+  const [members, modules, subscriptionData, usage] = await Promise.all([
+    getCompanyMembers(ctx.company.id),
+    getCompanyModules(ctx.company.id, ctx.company.craftType),
+    getSubscriptionWithPlan(ctx.company.id, ctx.company.subscriptionTier as SubscriptionTier),
+    getCurrentUsage(ctx.company.id),
+  ]);
+
+  const activeModules = modules.filter((m) => m.isActive).length;
+  const totalModules = modules.filter((m) => m.isAvailable).length;
+  const storagePercent =
+    subscriptionData.limits.maxStorageMb > 0
+      ? Math.round(
+          (usage.storageMb / subscriptionData.limits.maxStorageMb) * 100,
+        )
+      : 0;
+  const storageGb = (usage.storageMb / 1024).toFixed(1);
+  const storageLimitGb =
+    subscriptionData.limits.maxStorageMb > 0
+      ? (subscriptionData.limits.maxStorageMb / 1024).toFixed(0)
+      : "∞";
+
+  const tierLabel =
+    subscriptionData.tier.charAt(0).toUpperCase() +
+    subscriptionData.tier.slice(1);
 
   return (
     <>
       <div>
         <h1 className="font-display text-2xl font-bold tracking-tight">
-          Willkommen, {mockUser.name.split(" ")[0]}
+          Willkommen, {ctx.user.name.split(" ")[0]}
         </h1>
         <p className="text-muted-foreground mt-1">
           Verwalten Sie Ihr Konto für{" "}
           <span className="font-medium text-foreground">
-            {mockCompany.name}
+            {ctx.company.name}
           </span>
         </p>
       </div>
 
-      {/* KPI Cards */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
@@ -59,13 +72,17 @@ export default function AccountOverviewPage() {
           </CardHeader>
           <CardContent>
             <div className="flex items-center gap-2">
-              <span className="text-2xl font-bold">Professional</span>
+              <span className="text-2xl font-bold">{tierLabel}</span>
               <Badge variant="secondary">Aktiv</Badge>
             </div>
-            <p className="text-xs text-muted-foreground mt-1">
-              Nächste Verlängerung:{" "}
-              {mockSubscription.currentPeriodEnd.toLocaleDateString("de-DE")}
-            </p>
+            {subscriptionData.subscription && (
+              <p className="text-xs text-muted-foreground mt-1">
+                Nächste Verlängerung:{" "}
+                {subscriptionData.subscription.currentPeriodEnd.toLocaleDateString(
+                  "de-DE",
+                )}
+              </p>
+            )}
           </CardContent>
         </Card>
 
@@ -76,16 +93,20 @@ export default function AccountOverviewPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {mockMembers.length}
-              <span className="text-sm font-normal text-muted-foreground">
-                {" "}
-                / {mockSubscriptionLimits.maxUsers}
-              </span>
+              {members.length}
+              {subscriptionData.limits.maxUsers > 0 && (
+                <span className="text-sm font-normal text-muted-foreground">
+                  {" "}
+                  / {subscriptionData.limits.maxUsers}
+                </span>
+              )}
             </div>
-            <p className="text-xs text-muted-foreground mt-1">
-              {mockSubscriptionLimits.maxUsers - mockMembers.length} Plätze
-              verfügbar
-            </p>
+            {subscriptionData.limits.maxUsers > 0 && (
+              <p className="text-xs text-muted-foreground mt-1">
+                {Math.max(0, subscriptionData.limits.maxUsers - members.length)}{" "}
+                Plätze verfügbar
+              </p>
+            )}
           </CardContent>
         </Card>
 
@@ -121,12 +142,13 @@ export default function AccountOverviewPage() {
                 / {storageLimitGb} GB
               </span>
             </div>
-            <Progress value={storagePercent} className="mt-2" />
+            {subscriptionData.limits.maxStorageMb > 0 && (
+              <Progress value={storagePercent} className="mt-2" />
+            )}
           </CardContent>
         </Card>
       </div>
 
-      {/* Quick Actions */}
       <div>
         <h2 className="font-display text-lg font-semibold mb-4">
           Schnellaktionen

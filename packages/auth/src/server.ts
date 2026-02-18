@@ -1,5 +1,6 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import { twoFactor } from "better-auth/plugins";
 import { db } from "@zunftgewerk/db/client";
 import {
   users,
@@ -23,7 +24,7 @@ export const auth = betterAuth({
   baseURL: process.env.BETTER_AUTH_URL,
 
   advanced: {
-    generateId: ({ model, size }) => crypto.randomUUID(),
+    generateId: ({ model: _model, size: _size }: { model: string; size: number }) => crypto.randomUUID(),
     database: {
       generateId: "uuid",
     },
@@ -57,6 +58,8 @@ export const auth = betterAuth({
     window: 60,
     max: 10,
   },
+
+  plugins: [twoFactor()],
 });
 
 export type Auth = typeof auth;

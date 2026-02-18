@@ -26,6 +26,7 @@
     "better-auth": "^1.4.0"
   },
   "devDependencies": {
+    "@types/node": "^22.0.0",
     "@zunftgewerk/types": "workspace:*",
     "@zunftgewerk/typescript-config": "workspace:*",
     "typescript": "^5.7.0"

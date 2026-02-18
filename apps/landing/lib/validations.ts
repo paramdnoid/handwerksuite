@@ -88,6 +88,60 @@ export const twoFactorSchema = z.object({
 export type TwoFactorFormData = z.infer<typeof twoFactorSchema>
 
 /* ------------------------------------------------------------------ */
+/*  Account form schemas                                               */
+/* ------------------------------------------------------------------ */
+
+export const updateCompanySchema = z.object({
+  name: z.string().min(1, 'Firmenname ist erforderlich.').max(255),
+  legalName: z.string().max(255).optional(),
+  craftType: z.string().min(1, 'Gewerk ist erforderlich.'),
+})
+export type UpdateCompanyFormData = z.infer<typeof updateCompanySchema>
+
+export const updateTaxDataSchema = z.object({
+  taxId: z.string().max(50).optional(),
+  vatId: z.string().max(50).optional(),
+  hwkNumber: z.string().max(50).optional(),
+})
+export type UpdateTaxDataFormData = z.infer<typeof updateTaxDataSchema>
+
+export const updateCompanySettingsSchema = z.object({
+  locale: z.string().min(1),
+  timezone: z.string().min(1),
+  currency: z.string().min(1),
+  defaultTaxRate: z.string().regex(/^\d+(\.\d{1,2})?$/, 'Ungültiger Steuersatz.'),
+  invoicePrefix: z.string().max(20).optional(),
+  fiscalYearStartMonth: z.coerce.number().int().min(1).max(12),
+})
+export type UpdateCompanySettingsFormData = z.infer<typeof updateCompanySettingsSchema>
+
+export const inviteMemberSchema = z.object({
+  email: emailField,
+  role: z.enum(['admin', 'manager', 'employee', 'readonly'], {
+    errorMap: () => ({ message: 'Bitte wählen Sie eine Rolle.' }),
+  }),
+})
+export type InviteMemberFormData = z.infer<typeof inviteMemberSchema>
+
+export const changePasswordSchema = z
+  .object({
+    currentPassword: z.string().min(1, 'Aktuelles Passwort ist erforderlich.'),
+    newPassword: passwordField,
+    confirmPassword: z.string().min(1, 'Passwortbestätigung ist erforderlich.'),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: 'Die Passwörter stimmen nicht überein.',
+    path: ['confirmPassword'],
+  })
+export type ChangePasswordFormData = z.infer<typeof changePasswordSchema>
+
+export const updateMemberRoleSchema = z.object({
+  memberId: z.string().uuid(),
+  role: z.enum(['admin', 'manager', 'employee', 'readonly']),
+})
+export type UpdateMemberRoleFormData = z.infer<typeof updateMemberRoleSchema>
+
+/* ------------------------------------------------------------------ */
 /*  Helpers                                                            */
 /* ------------------------------------------------------------------ */
 

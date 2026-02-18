@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "tauri dev",
-    "build": "tauri build",
+    "build": "CI=true tauri build",
     "tauri": "tauri",
     "clean": "rm -rf src-tauri/target .turbo"
   },

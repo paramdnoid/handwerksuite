@@ -26,13 +26,23 @@ const navItems = [
   { title: "Sicherheit", href: "/account/security", icon: Shield },
 ];
 
-export function AppSidebar(
-  props: React.ComponentProps<typeof AppSidebarShell>,
-) {
+interface AppSidebarProps extends React.ComponentProps<typeof AppSidebarShell> {
+  user: {
+    name: string;
+    email: string;
+    image: string | null;
+  };
+}
+
+export function AppSidebar({ user, ...props }: AppSidebarProps) {
   const pathname = usePathname();
 
   return (
-    <AppSidebarShell subtitle="Account" footer={<NavUser />} {...props}>
+    <AppSidebarShell
+      subtitle="Account"
+      footer={<NavUser user={user} />}
+      {...props}
+    >
       {navItems.map((item) => {
         const isActive =
           item.href === "/account"

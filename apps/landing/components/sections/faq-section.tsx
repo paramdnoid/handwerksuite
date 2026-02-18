@@ -5,7 +5,7 @@ import {
   AccordionTrigger,
   AccordionContent,
 } from '@zunftgewerk/ui'
-import { FadeIn, StaggerChildren, StaggerItem } from '@/components/fade-in'
+import { FadeIn } from '@/components/fade-in'
 import { faqs } from '@/content/faqs'
 
 export function FaqSection() {

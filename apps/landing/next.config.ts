@@ -6,6 +6,8 @@ const nextConfig: NextConfig = {
     "@zunftgewerk/ui",
     "@zunftgewerk/app-core",
     "@zunftgewerk/auth",
+    "@zunftgewerk/db",
+    "@zunftgewerk/stripe",
     "@zunftgewerk/types",
   ],
 
@@ -30,7 +32,7 @@ const nextConfig: NextConfig = {
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "font-src 'self' https://fonts.gstatic.com",
               "img-src 'self' data: blob: https:",
-              "connect-src 'self' https://*.zunftgewerk.de https://*.sentry.io",
+              "connect-src 'self' https://*.zunftgewerk.de https://*.sentry.io https://*.stripe.com",
               "frame-ancestors 'none'",
               "base-uri 'self'",
               "form-action 'self'",

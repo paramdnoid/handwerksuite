@@ -27,6 +27,7 @@
     "better-auth": "^1.4.0"
   },
   "devDependencies": {
+    "@types/node": "^22.0.0",
     "better-auth": "^1.4.0",
     "@zunftgewerk/auth": "workspace:*",
     "@zunftgewerk/crypto": "workspace:*",
