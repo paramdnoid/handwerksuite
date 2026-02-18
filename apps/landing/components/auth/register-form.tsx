@@ -1,9 +1,9 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { motion, AnimatePresence } from 'framer-motion'
+import { useState } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   Button,
   Input,
@@ -17,36 +17,37 @@ import {
   SelectValue,
   Alert,
   AlertDescription,
-} from '@zunftgewerk/ui'
-import { Loader2, ArrowRight } from 'lucide-react'
-import { SocialProviders } from './social-providers'
-import { PasswordInput } from './password-input'
-import { useAuth } from '@zunftgewerk/app-core'
-import { registerSchema, getFieldErrors, CRAFT_TYPE_OPTIONS } from '@/lib/validations'
-import { fieldStagger } from '@/lib/stagger'
-import { FieldError } from './field-error'
+} from '@zunftgewerk/ui';
+import { Loader2, ArrowRight } from 'lucide-react';
+import { SocialProviders } from './social-providers';
+import { PasswordInput } from './password-input';
+import { useAuth } from '@zunftgewerk/app-core';
+import { setupCompanyForUser } from '@/lib/actions/setup-company';
+import { registerSchema, getFieldErrors, CRAFT_TYPE_OPTIONS } from '@/lib/validations';
+import { fieldStagger } from '@/lib/stagger';
+import { FieldError } from './field-error';
 
 /* ------------------------------------------------------------------ */
 /*  RegisterForm                                                       */
 /* ------------------------------------------------------------------ */
 
 export function RegisterForm() {
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({})
-  const [craftType, setCraftType] = useState('')
-  const router = useRouter()
-  const { signUp } = useAuth()
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+  const [craftType, setCraftType] = useState('');
+  const router = useRouter();
+  const { signUp } = useAuth();
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    if (isLoading) return
+    e.preventDefault();
+    if (isLoading) return;
 
-    setIsLoading(true)
-    setError(null)
-    setFieldErrors({})
+    setIsLoading(true);
+    setError(null);
+    setFieldErrors({});
 
-    const formData = new FormData(e.currentTarget)
+    const formData = new FormData(e.currentTarget);
     const raw = {
       name: formData.get('name')?.toString() ?? '',
       companyName: formData.get('companyName')?.toString() ?? '',
@@ -54,30 +55,36 @@ export function RegisterForm() {
       email: formData.get('email')?.toString() ?? '',
       password: formData.get('password')?.toString() ?? '',
       terms: formData.get('terms') === 'on' ? (true as const) : (false as const),
-    }
+    };
 
-    const result = registerSchema.safeParse(raw)
+    const result = registerSchema.safeParse(raw);
     if (!result.success) {
-      setFieldErrors(getFieldErrors(result.error))
-      setIsLoading(false)
-      return
+      setFieldErrors(getFieldErrors(result.error));
+      setIsLoading(false);
+      return;
     }
 
-    const { name, companyName: _companyName, craftType: _selectedCraft, email, password } = result.data
+    const { name, companyName, craftType: selectedCraft, email, password } = result.data;
 
     try {
-      // Step 1: Create user account (Better Auth)
-      await signUp(email, password, name)
+      const { userId } = await signUp(email, password, name);
 
-      // Step 2: Create company via API (post-signup)
-      // TODO: Call company.create tRPC endpoint with companyName + selectedCraft
-      // This creates: Company + CompanySettings + CompanyMember (owner) + default modules
+      if (userId) {
+        await setupCompanyForUser({ userId, companyName, craftType: selectedCraft });
+      }
 
-      router.push(`/verify?pending=true&email=${encodeURIComponent(email)}`)
-    } catch {
-      setError('Registrierung fehlgeschlagen. Bitte versuchen Sie es erneut.')
+      router.push(`/verify?pending=true&email=${encodeURIComponent(email)}`);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : '';
+      if (message.includes('already') || message.includes('exist')) {
+        setError('Diese E-Mail-Adresse ist bereits registriert. Bitte melden Sie sich an.');
+      } else if (message.includes('password') || message.includes('Password')) {
+        setError('Das Passwort erfüllt nicht die Anforderungen. Mindestens 12 Zeichen.');
+      } else {
+        setError('Registrierung fehlgeschlagen. Bitte versuchen Sie es erneut.');
+      }
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }
 
@@ -89,7 +96,7 @@ export function RegisterForm() {
           <h1 className="font-display text-2xl font-bold tracking-tight sm:text-3xl">
             Konto erstellen
           </h1>
-          <p className="text-muted-foreground text-sm text-balance">
+          <p className="text-muted-foreground text-balance text-sm">
             Starten Sie jetzt mit ZunftGewerk
           </p>
         </div>
@@ -149,11 +156,7 @@ export function RegisterForm() {
         {/* Gewerk */}
         <div className={`space-y-2 ${fieldStagger(3)}`}>
           <Label htmlFor="craftType">Gewerk</Label>
-          <Select
-            value={craftType}
-            onValueChange={setCraftType}
-            disabled={isLoading}
-          >
+          <Select value={craftType} onValueChange={setCraftType} disabled={isLoading}>
             <SelectTrigger
               id="craftType"
               aria-invalid={!!fieldErrors.craftType}
@@ -198,9 +201,9 @@ export function RegisterForm() {
             id="password"
             name="password"
             autoComplete="new-password"
-            placeholder="Mindestens 8 Zeichen"
+            placeholder="Mindestens 12 Zeichen"
             required
-            minLength={8}
+            minLength={12}
             disabled={isLoading}
             showStrength
             aria-invalid={!!fieldErrors.password}
@@ -215,7 +218,7 @@ export function RegisterForm() {
             <Checkbox id="terms" name="terms" disabled={isLoading} className="mt-0.5 shrink-0" />
             <Label
               htmlFor="terms"
-              className="block cursor-pointer text-sm leading-snug font-normal"
+              className="block cursor-pointer text-sm font-normal leading-snug"
             >
               Ich stimme den{' '}
               <Link
@@ -280,5 +283,5 @@ export function RegisterForm() {
         </p>
       </div>
     </form>
-  )
+  );
 }

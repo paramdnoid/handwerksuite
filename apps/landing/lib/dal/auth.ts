@@ -1,9 +1,9 @@
-import { headers } from "next/headers";
-import { redirect } from "next/navigation";
-import { auth } from "@zunftgewerk/auth/server";
-import { db } from "@zunftgewerk/db/client";
-import { companies, companyMembers } from "@zunftgewerk/db/schema";
-import { eq, isNull, and } from "drizzle-orm";
+import { headers } from 'next/headers';
+import { redirect } from 'next/navigation';
+import { auth } from '@zunftgewerk/auth/server';
+import { db } from '@zunftgewerk/db/client';
+import { companies, companyMembers } from '@zunftgewerk/db/schema';
+import { eq, isNull, and } from 'drizzle-orm';
 
 // ── Types ───────────────────────────────────────────────
 
@@ -24,8 +24,8 @@ export interface ServerSession {
 }
 
 export interface UserWithCompany {
-  user: ServerSession["user"];
-  session: ServerSession["session"];
+  user: ServerSession['user'];
+  session: ServerSession['session'];
   company: {
     id: string;
     slug: string;
@@ -82,7 +82,7 @@ export async function getServerSession(): Promise<ServerSession | null> {
 export async function requireSession(): Promise<ServerSession> {
   const session = await getServerSession();
   if (!session) {
-    redirect("/login");
+    redirect('/login');
   }
   return session;
 }
@@ -147,9 +147,14 @@ export async function getCurrentUserWithCompany(): Promise<UserWithCompany | nul
 // ── Require User with Company ───────────────────────────
 
 export async function requireUserWithCompany(): Promise<UserWithCompany> {
+  const session = await getServerSession();
+  if (!session) {
+    redirect('/login');
+  }
+
   const data = await getCurrentUserWithCompany();
   if (!data) {
-    redirect("/login");
+    redirect('/login?error=no_company');
   }
   return data;
 }

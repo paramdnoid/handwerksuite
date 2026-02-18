@@ -20,6 +20,16 @@ const serverSchema = z.object({
   VAULT_TOKEN: z.string().optional(),
   POWERSYNC_URL: z.string().url().optional(),
   POWERSYNC_PUBLIC_KEY: z.string().optional(),
+  SMTP_HOST: z.string().min(1).optional(),
+  SMTP_PORT: z.coerce.number().default(587),
+  SMTP_SECURE: z
+    .string()
+    .transform((v) => v === 'true')
+    .default('false'),
+  SMTP_USER: z.string().min(1).optional(),
+  SMTP_PASS: z.string().min(1).optional(),
+  EMAIL_FROM_ADDRESS: z.string().email().default('noreply@zunftgewerk.de'),
+  EMAIL_FROM_NAME: z.string().default('ZunftGewerk'),
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
 });
 

@@ -16,6 +16,7 @@
     "@react-three/fiber": "^9.5.0",
     "@zunftgewerk/app-core": "workspace:*",
     "@zunftgewerk/auth": "workspace:*",
+    "@zunftgewerk/email": "workspace:*",
     "drizzle-orm": "^0.38.0",
     "@zunftgewerk/db": "workspace:*",
     "@zunftgewerk/stripe": "workspace:*",

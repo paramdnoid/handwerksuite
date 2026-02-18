@@ -27,8 +27,9 @@
   },
   "dependencies": {
     "@zunftgewerk/db": "workspace:*",
-    "better-auth": "^1.4.0",
-    "@zunftgewerk/env": "workspace:*"
+    "@zunftgewerk/email": "workspace:*",
+    "@zunftgewerk/env": "workspace:*",
+    "better-auth": "^1.4.0"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

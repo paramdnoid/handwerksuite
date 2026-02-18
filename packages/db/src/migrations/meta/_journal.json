@@ -15,6 +15,20 @@
       "when": 1771373935018,
       "tag": "0001_moaning_korvac",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1771422118700,
+      "tag": "0002_groovy_lockjaw",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1739886000000,
+      "tag": "0003_better_auth_account_fix",
+      "breakpoints": true
     }
   ]
 }

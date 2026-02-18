@@ -4,6 +4,7 @@ import { twoFactor } from 'better-auth/plugins';
 import { db } from '@zunftgewerk/db/client';
 import { users, sessions, accounts, verifications } from '@zunftgewerk/db/schema';
 import { serverEnv } from '@zunftgewerk/env/server';
+import { sendVerificationEmail, sendResetPasswordEmail } from '@zunftgewerk/email';
 
 const env = serverEnv();
 
@@ -29,10 +30,21 @@ export const auth = betterAuth({
     },
   },
 
+  emailVerification: {
+    sendVerificationEmail: async ({ user, url, token }) => {
+      void sendVerificationEmail({ to: user.email, url, token });
+    },
+    sendOnSignUp: true,
+    autoSignInAfterVerification: true,
+  },
+
   emailAndPassword: {
     enabled: true,
     requireEmailVerification: true,
     minPasswordLength: 12,
+    sendResetPassword: async ({ user, url }) => {
+      void sendResetPasswordEmail({ to: user.email, url });
+    },
   },
 
   socialProviders: {

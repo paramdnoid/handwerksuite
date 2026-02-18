@@ -13,6 +13,7 @@ const nextConfig: NextConfig = {
     '@zunftgewerk/app-core',
     '@zunftgewerk/auth',
     '@zunftgewerk/db',
+    '@zunftgewerk/email',
     '@zunftgewerk/stripe',
     '@zunftgewerk/types',
   ],

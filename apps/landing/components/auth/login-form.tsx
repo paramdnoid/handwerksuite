@@ -1,60 +1,77 @@
-'use client'
+'use client';
 
-import { useState, useRef } from 'react'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { motion, AnimatePresence } from 'framer-motion'
-import { Button, Input, Label, Checkbox, Separator, Alert, AlertDescription } from '@zunftgewerk/ui'
-import { Loader2, ArrowRight } from 'lucide-react'
-import { SocialProviders } from './social-providers'
-import { PasswordInput } from './password-input'
-import { useAuth } from '@zunftgewerk/app-core'
-import { loginSchema, getFieldErrors } from '@/lib/validations'
-import { fieldStagger } from '@/lib/stagger'
-import { FieldError } from './field-error'
+import { useState, useRef } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  Button,
+  Input,
+  Label,
+  Checkbox,
+  Separator,
+  Alert,
+  AlertDescription,
+} from '@zunftgewerk/ui';
+import { Loader2, ArrowRight } from 'lucide-react';
+import { SocialProviders } from './social-providers';
+import { PasswordInput } from './password-input';
+import { useAuth } from '@zunftgewerk/app-core';
+import { loginSchema, getFieldErrors } from '@/lib/validations';
+import { fieldStagger } from '@/lib/stagger';
+import { FieldError } from './field-error';
 
 /* ------------------------------------------------------------------ */
 /*  LoginForm                                                          */
 /* ------------------------------------------------------------------ */
 
 export function LoginForm() {
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({})
-  const router = useRouter()
-  const formRef = useRef<HTMLFormElement>(null)
-  const { signIn } = useAuth()
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+  const router = useRouter();
+  const formRef = useRef<HTMLFormElement>(null);
+  const { signIn } = useAuth();
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    if (isLoading) return
+    e.preventDefault();
+    if (isLoading) return;
 
-    setIsLoading(true)
-    setError(null)
-    setFieldErrors({})
+    setIsLoading(true);
+    setError(null);
+    setFieldErrors({});
 
-    const formData = new FormData(e.currentTarget)
+    const formData = new FormData(e.currentTarget);
     const raw = {
       email: formData.get('email')?.toString() ?? '',
       password: formData.get('password')?.toString() ?? '',
-    }
+    };
 
-    const result = loginSchema.safeParse(raw)
+    const result = loginSchema.safeParse(raw);
     if (!result.success) {
-      setFieldErrors(getFieldErrors(result.error))
-      setIsLoading(false)
-      return
+      setFieldErrors(getFieldErrors(result.error));
+      setIsLoading(false);
+      return;
     }
 
-    const { email, password } = result.data
+    const { email, password } = result.data;
 
     try {
-      await signIn(email, password)
-      router.push('/account')
-    } catch {
-      setError('Ungültige Anmeldedaten. Bitte versuchen Sie es erneut.')
+      await signIn(email, password);
+      router.push('/account');
+    } catch (err) {
+      const message = err instanceof Error ? err.message : '';
+      if (
+        message.includes('verified') ||
+        message.includes('verify') ||
+        message.includes('email_not_verified')
+      ) {
+        setError('Bitte bestätigen Sie zuerst Ihre E-Mail-Adresse.');
+      } else {
+        setError('Ungültige Anmeldedaten. Bitte versuchen Sie es erneut.');
+      }
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }
 
@@ -66,7 +83,7 @@ export function LoginForm() {
           <h1 className="font-display text-2xl font-bold tracking-tight sm:text-3xl">
             Willkommen zurück
           </h1>
-          <p className="text-muted-foreground text-sm text-balance">
+          <p className="text-muted-foreground text-balance text-sm">
             Melden Sie sich mit Ihrem Konto an
           </p>
         </div>
@@ -102,7 +119,9 @@ export function LoginForm() {
             required
             disabled={isLoading}
             aria-invalid={!!fieldErrors.email}
-            aria-describedby={fieldErrors.email ? 'login-email-error' : error ? 'login-error-msg' : undefined}
+            aria-describedby={
+              fieldErrors.email ? 'login-email-error' : error ? 'login-error-msg' : undefined
+            }
             className="focus:shadow-glow transition-shadow duration-200"
           />
           <FieldError message={fieldErrors.email} id="login-email-error" />
@@ -184,5 +203,5 @@ export function LoginForm() {
         </p>
       </div>
     </form>
-  )
+  );
 }
